@@ -3,195 +3,221 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>My Doas App: Quranic Doas</title>
-<meta name="description" content="Quranic Doas with Arabic, transliteration, meaning and recitation.">
-<meta name="theme-color" content="#26262a">
-<meta name="mobile-web-app-capable" content="yes">
+<title>My Doas App</title>
+<meta name="theme-color" content="#2b2d30">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="My Doas">
-<link rel="manifest" href="/manifest.webmanifest">
-<link rel="icon" type="image/png" href="/icon-192.png">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-title" content="My Doas App">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%8C%99%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Amiri+Quran&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=Amiri+Quran&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 <style>
 :root{
-  --wall:#26262a; --wall-2:#303035; --pink:#f2a3c0; --pink-deep:#e5789f; --cream:#f4ebd8; --cream-dim:#bfb7a6; --gold:#d8b46b;
-  --line:rgba(244,235,216,.16); --danger:#ff9b9b;
-  --serif:'Newsreader',Georgia,'Times New Roman',serif;
-  --arabic:'Amiri Quran','Amiri','Scheherazade New','Noto Naskh Arabic','Geeza Pro','Traditional Arabic',serif;
+  --wall:#2b2d30; --wall-deep:#1e2022; --wall-lift:#35383c;
+  --pink:#eaa7b0; --pink-mid:#cf8993; --pink-shade:#a5626e; --pink-deep:#7c4651;
+  --cream:#ecdcc0; --cream-mid:#c9b593; --cream-shade:#8f7c5c; --cream-deep:#5c4d38;
+  --candle:#f6c877; --terracotta:#b8734d;
+  --bg:var(--wall); --surface:var(--wall-lift); --ink:var(--cream); --muted:#b4a68d; --line:rgba(236,220,192,.16);
+  --accent:var(--pink); --on-accent:#2b2d30; --heart:#f4909c; --gold:var(--candle);
+  --sans:'EB Garamond','Cormorant Garamond',Georgia,'Times New Roman',serif;
+  --arabic:'Aref Ruqaa','Amiri Quran','Amiri','Scheherazade New','Noto Naskh Arabic','Geeza Pro','Traditional Arabic',serif;
   --ar-size:34px;
   box-sizing:border-box;
   padding-top:env(safe-area-inset-top,0px);
   padding-bottom:env(safe-area-inset-bottom,0px);
 }
-html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 8px);background:var(--wall);-webkit-text-size-adjust:100%}
+:root[data-script="naskh"]{--arabic:'Amiri Quran','Amiri','Scheherazade New','Noto Naskh Arabic','Geeza Pro','Traditional Arabic',serif}
+html{scroll-padding-top:env(safe-area-inset-top,0px);background:var(--wall);-webkit-text-size-adjust:100%;color-scheme:dark}
 *,*::before,*::after{box-sizing:border-box}
 body{
-  margin:0;color:var(--cream);font-family:var(--serif);font-size:18px;line-height:1.6;-webkit-tap-highlight-color:transparent;
+  margin:0;color:var(--ink);font-family:var(--sans);font-size:18px;line-height:1.5;-webkit-tap-highlight-color:transparent;
   background-color:var(--wall);
+  /* woven linen wall, with a faint candle glow at the top */
   background-image:
-    repeating-linear-gradient(0deg,rgba(255,255,255,.03) 0 1px,transparent 1px 3px),
-    repeating-linear-gradient(90deg,rgba(0,0,0,.2) 0 1px,transparent 1px 3px);
-  min-height:100vh;
+    repeating-linear-gradient(0deg,rgba(255,255,255,.03) 0 1px,transparent 1px 4px),
+    repeating-linear-gradient(90deg,rgba(0,0,0,.14) 0 1px,transparent 1px 4px),
+    radial-gradient(90% 40% at 50% 0%,rgba(246,200,119,.08),transparent 70%);
 }
 button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:pointer}
 button:focus-visible,input:focus-visible,a:focus-visible{outline:2px solid var(--pink);outline-offset:2px}
-.wrap{max-width:640px;margin:0 auto;padding:0 20px}
-[hidden]{display:none!important}
+.wrap{max-width:720px;margin:0 auto;padding:0 18px}
 
-/* Hero */
-.hero{text-align:center;padding:0 0 12px}
-.hero .wrap{padding:0}
-.hero .head{padding:0 20px;margin-top:-34px;position:relative}
-.banner{display:block;width:100%;height:auto;margin:0 auto;-webkit-mask-image:linear-gradient(#000 62%,transparent 100%);mask-image:linear-gradient(#000 62%,transparent 100%)}
-.hero h1{margin:0;font-size:30px;font-weight:600;letter-spacing:.01em;color:var(--cream)}
-.hero .sub{margin:2px 0 0;font-size:20px;font-style:italic;color:var(--pink)}
-.bism{font-family:var(--arabic);font-size:30px;line-height:2;color:var(--pink);margin:10px 0 0}
+/* Hero: lettering on the wall */
+.hero{padding:24px 0 22px;text-align:center}
+.hero-top{display:flex;flex-direction:column;align-items:center;gap:0}
+.hero h1{margin:0;font-size:34px;font-weight:700;letter-spacing:.01em;color:var(--cream);
+  text-shadow:0 1px 0 var(--cream-mid),0 2px 0 var(--cream-shade),0 3px 0 var(--cream-deep),0 7px 9px rgba(0,0,0,.5)}
+.bism{font-family:var(--arabic);font-size:26px;line-height:1.9;color:var(--pink);
+  text-shadow:0 1px 0 var(--pink-mid),0 2px 0 var(--pink-shade),0 5px 7px rgba(0,0,0,.5)}
+.sub{margin:0;color:var(--muted);font-size:16px}
+.prem{display:block;margin:14px auto 0;height:38px;padding:0 18px;border-radius:19px;border:1px solid var(--pink-mid);color:var(--pink);font-weight:600;font-size:16px}
+.prem.on{background:var(--pink);color:var(--wall);border-color:var(--pink)}
+.knit{height:14px;margin-top:6px;background:
+  repeating-linear-gradient(115deg,rgba(255,255,255,.24) 0 3px,rgba(0,0,0,.10) 3px 7px),
+  linear-gradient(#dfaab2,#bd7f8a)}
 
-body.in-app .hero{padding:0 0 2px}
-body.in-app .banner{height:120px;object-fit:cover;object-position:left bottom}
-body.in-app .hero .head{margin-top:-30px}
-body.in-app .hero h1{font-size:26px}
-body.in-app .bism{font-size:24px;margin-top:4px}
-
-/* Paywall */
-.plan{margin:14px 0 40px;padding:26px 22px;border:1px solid var(--gold);border-radius:18px;background:rgba(0,0,0,.18);text-align:center}
-.price{font-size:44px;font-weight:600;line-height:1.1;color:var(--cream)}
-.per{color:var(--cream-dim);font-size:17px;margin-top:2px}
-.incl{list-style:none;margin:6px auto 22px;padding:0;text-align:left;max-width:420px}
-.incl li{position:relative;padding:8px 0 8px 26px;border-top:1px solid var(--line)}
-.incl li:first-child{border-top:0}
-.incl li::before{content:"";position:absolute;left:4px;top:17px;width:9px;height:9px;border-radius:50%;background:var(--pink)}
-.btn.small{margin-top:10px;min-height:46px;font-size:17px}
-.claim{margin-top:28px;padding-top:22px;border-top:1px solid var(--line);max-width:340px;margin-left:auto;margin-right:auto}
-.claim-lead{text-align:center;color:var(--cream-dim);font-size:15px;margin:0 0 12px;font-style:italic}
-.claim input{width:100%;box-sizing:border-box;height:48px;border-radius:12px;border:1px solid var(--line);background:var(--wall-2);color:var(--cream);padding:0 14px;font:inherit;font-size:17px;text-align:center}
-.btn.outline{background:transparent;border:1.5px solid var(--pink);color:var(--pink);margin-top:12px}
-.btn.outline:hover{background:rgba(242,163,192,.08)}
-.ck-title{margin:0 0 10px;font-size:24px;font-weight:600;color:var(--cream)}
-.ck-msg{margin:18px auto 22px;max-width:420px;color:var(--cream)}
-.linkbtn{display:block;margin:14px auto 0;padding:8px 14px;color:var(--pink);font-size:17px;text-underline-offset:3px;text-decoration:underline}
-.btn{display:inline-flex;align-items:center;justify-content:center;min-height:52px;padding:0 26px;border-radius:26px;background:var(--pink);color:#2a1f25;font-weight:600;font-size:19px;width:100%;max-width:420px}
-.btn:hover{background:#f6b3cb}
-.btn:active{transform:scale(.985)}
-.btn[disabled]{opacity:.55;cursor:not-allowed}
-.msg{margin:14px auto 0;max-width:420px;font-size:16px;color:var(--cream-dim)}
-.msg.err{color:var(--danger)}
-.testnote{margin:14px auto 0;max-width:420px;padding:8px 12px;border:1px dashed var(--gold);border-radius:10px;font-size:15px;color:var(--gold)}
-
-/* Toolbar */
-.toolbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--wall);padding:12px 0 8px;border-bottom:1px solid var(--line)}
-.search{display:block}
-.search input{width:100%;height:46px;border:1px solid var(--line);background:var(--wall-2);color:var(--cream);border-radius:12px;padding:0 14px;font:inherit;font-size:17px}
-.search input::placeholder{color:var(--cream-dim)}
-.chips{display:flex;gap:8px;overflow-x:auto;padding:10px 0 2px;scrollbar-width:none}
-.chips::-webkit-scrollbar{display:none}
-.chip{flex:none;height:38px;padding:0 15px;border:1px solid var(--line);border-radius:19px;font-size:16px;color:var(--cream);white-space:nowrap}
-.chip[aria-pressed="true"]{background:var(--pink);border-color:var(--pink);color:#2a1f25;font-weight:600}
-.prefs{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:14px 0 2px}
-.tog{height:36px;padding:0 13px;border-radius:9px;border:1px solid var(--line);font-size:15px;color:var(--cream-dim)}
-.tog[aria-pressed="true"]{color:var(--pink);border-color:var(--pink);font-weight:600}
-.sizer{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
-.sizer button{height:34px;min-width:46px;font-size:15px;color:var(--cream-dim)}
-.sizer button+button{border-left:1px solid var(--line)}
-.status{margin:8px 0 0;font-size:15px;color:var(--cream-dim)}
-
-/* Doa cards */
+/* Doas */
 .card{padding:26px 0;border-bottom:1px solid var(--line)}
 .card:last-child{border-bottom:0}
 .meta{display:flex;justify-content:space-between;gap:12px;align-items:baseline;font-size:15px}
-.ref{color:var(--pink);font-weight:600}
-.catl{color:var(--cream-dim);text-align:right}
-.ar{font-family:var(--arabic);font-size:var(--ar-size);line-height:2.2;text-align:center;margin:14px 0 8px;color:var(--pink)}
-.tr{font-style:italic;color:var(--cream);margin:8px 0;font-size:17px;line-height:1.6}
-.en{margin:8px 0;font-size:18px;line-height:1.65;color:var(--cream)}
-.note{margin:12px 0 0;padding-left:12px;border-left:2px solid var(--gold);color:var(--cream-dim);font-size:16px}
-.player{display:flex;align-items:center;gap:12px;margin:6px 0 10px;padding:8px 12px 8px 8px;border:1px solid var(--line);border-radius:30px}
-.pbtn{flex:none;width:44px;height:44px;border-radius:50%;background:var(--pink);color:#2a1f25;display:grid;place-items:center}
-.pbtn:active{transform:scale(.95)}
-.pbtn.loading svg{animation:spin 1s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.pmid{flex:1;min-width:0}
-.ptime{display:block;font-size:14.5px;color:var(--cream-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.player.err .ptime{color:var(--danger)}
-.bar{height:3px;margin-top:5px;background:var(--line);border-radius:2px;overflow:hidden}
-.bar i{display:block;height:100%;width:0;background:var(--pink)}
-.plink{flex:none;font-size:14px;color:var(--pink);text-underline-offset:3px}
+.mleft{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px}
+.ref{color:var(--pink);font-weight:600;letter-spacing:.02em}
+.rn{color:var(--muted);font-size:14px}
+.catl{color:var(--muted);text-align:right}
+.ar{font-family:var(--arabic);font-size:var(--ar-size);line-height:2.1;text-align:center;margin:12px 0 8px;color:var(--pink);
+  text-shadow:0 1px 0 var(--pink-mid),0 2px 0 var(--pink-shade),0 5px 7px rgba(0,0,0,.5)}
+.tr{text-align:center;color:var(--cream-mid);margin:8px 0;font-size:19px;line-height:1.5;letter-spacing:.01em}
+.en{text-align:center;color:var(--cream);margin:8px 0;font-size:19.5px;line-height:1.55;text-shadow:0 1px 0 rgba(0,0,0,.45)}
+.en::before{content:"\201C"}
+.en::after{content:"\201D"}
+.note{margin:12px 0 0;padding-left:10px;border-left:2px solid var(--pink-mid);color:var(--muted);font-size:15.5px}
 .actions{display:flex;align-items:center;gap:2px;margin-top:12px;flex-wrap:wrap}
-.act{display:inline-flex;align-items:center;gap:7px;height:42px;padding:0 11px;border-radius:10px;color:var(--cream-dim);font-size:16px}
-.act:hover{background:rgba(244,235,216,.07)}
-.act.on{color:var(--pink)}
+.act{display:inline-flex;align-items:center;gap:6px;height:42px;padding:0 10px;border-radius:10px;color:var(--muted);font-size:16px;font-weight:500}
+.act:hover{background:rgba(255,255,255,.06)}
+.act.on{color:var(--heart)}
 .spacer{flex:1}
-.count{display:inline-flex;align-items:center;height:42px;padding:0 16px;border:1px solid var(--pink);border-radius:21px;color:var(--pink);font-weight:600;font-size:16px;font-variant-numeric:tabular-nums}
+.count{display:inline-flex;align-items:center;gap:8px;height:42px;padding:0 16px;border:1px solid var(--pink-mid);border-radius:21px;color:var(--pink);font-weight:600;font-size:16px;font-variant-numeric:tabular-nums}
 .count:active{transform:scale(.97)}
 .reset{width:42px;justify-content:center;padding:0}
-.empty{padding:40px 0;text-align:center;color:var(--cream-dim)}
-.empty button{margin-top:12px;height:42px;padding:0 18px;border-radius:10px;border:1px solid var(--pink);color:var(--pink);font-weight:600}
-.bottom{height:36px}
-#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--cream);color:#2a1f25;padding:10px 16px;border-radius:10px;font-size:16px;font-weight:500;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:50}
+
+/* The doa of the day: bigger, raised lettering */
+.featured{padding:20px 0 4px;border:0}
+.featured .feat-head{display:flex;align-items:center;justify-content:space-between;color:var(--candle);font-weight:600;font-size:17px}
+.featured .feat-head .act{color:var(--cream)}
+.featured .meta{justify-content:center}
+.featured .catl{display:none}
+.featured .ar{--ar-size:calc(var(--ar-size-base,34px) * 1.2);margin:10px 0 6px;
+  text-shadow:0 1px 0 #d998a2,0 2px 0 var(--pink-mid),0 3px 0 var(--pink-shade),0 4px 0 var(--pink-deep),0 10px 12px rgba(0,0,0,.55)}
+.featured .tr{font-size:22px;color:var(--cream);
+  text-shadow:0 1px 0 var(--cream-mid),0 2px 0 var(--cream-shade),0 3px 0 var(--cream-deep),0 7px 8px rgba(0,0,0,.5)}
+.featured .en{font-size:21px;
+  text-shadow:0 1px 0 var(--cream-mid),0 2px 0 var(--cream-shade),0 3px 0 var(--cream-deep),0 6px 8px rgba(0,0,0,.5)}
+.featured .note{text-align:left}
+
+/* Audio player */
+.player{margin:6px 0 10px;padding:8px 10px;border:1px solid var(--line);border-radius:14px;background:rgba(0,0,0,.16)}
+.p-inline{display:flex;align-items:center;gap:10px}
+.p-link{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+body[data-audio="link"] .p-inline{display:none}
+body:not([data-audio="link"]) .p-link{display:none}
+.listen{display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 18px 0 14px;border-radius:22px;background:var(--pink);color:var(--on-accent);font-weight:700;font-size:16px;text-decoration:none}
+.listen:active{transform:scale(.97)}
+.phint{flex-basis:100%;font-size:14px;color:var(--muted)}
+.pbtn{flex:none;width:44px;height:44px;border-radius:50%;background:var(--pink);color:var(--on-accent);display:grid;place-items:center}
+.pbtn:active{transform:scale(.96)}
+.pbtn.loading svg{animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.pmid{flex:1;min-width:90px}
+.pseek{display:block;width:100%;height:20px;margin:0;accent-color:var(--pink);background:transparent}
+.ptime{display:block;font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.player.err .ptime{color:var(--heart)}
+.pchip{flex:none;height:34px;min-width:44px;padding:0 10px;border:1px solid var(--line);border-radius:17px;font-size:15px;font-weight:600;color:var(--pink);font-variant-numeric:tabular-nums}
+.pchip[aria-pressed="true"]{background:var(--pink);border-color:var(--pink);color:var(--on-accent)}
+.pfoot{margin:0 0 6px;font-size:14.5px;color:var(--muted);line-height:1.5;text-align:center}
+.pfoot a{color:var(--pink);font-weight:600;text-underline-offset:2px}
+
+/* Premium */
+.lockrow{display:flex;align-items:center;gap:10px;width:100%;min-height:54px;margin-top:10px;padding:10px 14px;border:1px dashed var(--line);border-radius:12px;color:var(--muted);font-size:16px;text-align:left}
+.lockrow svg{flex:none;color:var(--pink)}
+.lockrow:hover{border-color:var(--pink-mid)}
+.card.locked{padding:20px 0}
+.sheet{position:fixed;inset:0;z-index:40;display:flex;align-items:flex-end;justify-content:center}
+.sheet[hidden]{display:none}
+.sheet-bg{position:absolute;inset:0;background:rgba(8,9,10,.66)}
+.sheet-panel{position:relative;width:100%;max-width:520px;max-height:92%;overflow:auto;background:var(--wall-lift);color:var(--cream);border-radius:22px 22px 0 0;border-top:3px solid var(--pink-mid);padding:24px 20px calc(24px + env(safe-area-inset-bottom,0px))}
+.sheet-x{position:absolute;top:10px;right:10px;width:44px;height:44px;display:grid;place-items:center;color:var(--muted);border-radius:22px}
+.sheet-panel h2{margin:0 44px 4px 0;font-size:26px;letter-spacing:.005em;color:var(--cream)}
+.sheet-reason{margin:0 0 6px;color:var(--pink);font-weight:600}
+.price{margin:10px 0 4px;font-size:17px;color:var(--muted)}
+.price strong{font-size:40px;color:var(--cream);letter-spacing:-.01em}
+.perks{list-style:none;margin:14px 0;padding:0;display:grid;gap:10px}
+.perks li{display:flex;gap:10px;align-items:flex-start;line-height:1.4}
+.perks svg{flex:none;margin-top:2px;color:var(--pink)}
+.sheet-text{margin:6px 0 12px}
+.fine{margin:10px 0 0;font-size:14px;color:var(--muted);line-height:1.5}
+.cta{display:block;width:100%;height:52px;margin-top:12px;border-radius:14px;background:var(--pink);color:var(--on-accent);font-weight:700;font-size:18px}
+.cta.ghost{background:transparent;color:var(--pink);border:1px solid var(--line)}
+.cta:disabled{opacity:.6;cursor:default}
+a.cta{display:flex;align-items:center;justify-content:center;text-decoration:none}
+
+/* Toolbar */
+.toolbar{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:rgba(43,45,48,.95);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);padding:12px 0 8px;border-bottom:1px solid var(--line)}
+.search{position:relative;display:block}
+.search svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none}
+.search input{width:100%;height:46px;border:1px solid var(--line);background:rgba(255,255,255,.05);color:var(--cream);border-radius:12px;padding:0 14px 0 40px;font:inherit;font-size:17px}
+.search input::placeholder{color:var(--muted)}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:10px 0 2px;scrollbar-width:none}
+.chips::-webkit-scrollbar{display:none}
+.chip{flex:none;height:38px;padding:0 15px;border:1px solid var(--line);border-radius:19px;font-size:16px;font-weight:500;color:var(--cream);background:transparent;white-space:nowrap}
+.chip[aria-pressed="true"]{background:var(--pink);border-color:var(--pink);color:var(--on-accent);font-weight:600}
+
+/* Display options */
+.prefs{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:14px 0 4px}
+.tog{height:36px;padding:0 13px;border-radius:9px;border:1px solid var(--line);font-size:15px;color:var(--muted);background:transparent}
+.tog[aria-pressed="true"]{color:var(--pink);border-color:var(--pink-mid);font-weight:600}
+.sizer{display:inline-flex;border:1px solid var(--line);border-radius:9px;overflow:hidden}
+.sizer button{height:34px;min-width:46px;font-size:16px;color:var(--muted)}
+.sizer button+button{border-left:1px solid var(--line)}
+.status{margin:8px 0 0;font-size:15px;color:var(--muted)}
+
+.empty{padding:40px 0;text-align:center;color:var(--muted)}
+.empty button{margin-top:12px;height:42px;padding:0 18px;border-radius:10px;border:1px solid var(--pink-mid);color:var(--pink);font-weight:600}
+footer{padding:26px 0 34px;color:var(--muted);font-size:14.5px;line-height:1.6}
+
+#toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translate(-50%,20px);background:var(--cream);color:var(--wall);padding:10px 16px;border-radius:10px;font-size:16px;font-weight:600;opacity:0;pointer-events:none;transition:opacity .2s,transform .2s;z-index:50}
 #toast.show{opacity:1;transform:translate(-50%,0)}
-.boot{padding:60px 0;text-align:center;color:var(--cream-dim)}
-@media (prefers-reduced-motion: reduce){#toast{transition:none}.pbtn:active,.count:active,.btn:active{transform:none}.pbtn.loading svg{animation:none}}
+@media (prefers-reduced-motion: reduce){#toast{transition:none}.count:active,.pbtn:active,.listen:active{transform:none}.pbtn.loading svg{animation:none}}
 </style>
 </head>
-<body>
+<body data-audio="link">
 
 <header class="hero">
   <div class="wrap">
-    <img class="banner" src="/mosque.jpg" width="991" height="554" alt="Mosque domes and a minaret among clouds, with a gold arch border">
-    <div class="head">
+    <div class="hero-top">
       <h1>My Doas App</h1>
-      <p class="sub">Quranic Doas</p>
-      <p class="bism" lang="ar" dir="rtl">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p>
+      <span class="bism" lang="ar" dir="rtl">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</span>
     </div>
+    <p class="sub" id="sub"></p>
+    <button class="prem" id="premBtn" data-action="paywall">Go Premium</button>
+    <div id="featured"></div>
   </div>
+  <div class="knit" aria-hidden="true"></div>
 </header>
 
-<main class="wrap" id="root">
-  <div class="boot" id="boot">Opening…</div>
-
-  <!-- Front page -->
-  <section class="plan" id="paywall" hidden>
-    <ul class="incl">
-      <li>Every Quranic Doa in clear Arabic, with transliteration and meaning</li>
-      <li>Recitation audio for each Doa</li>
-      <li>Surah Ad-Duha and the Doas from the last part of the Qur'an</li>
-      <li>Save your favourite Doas and count your repetitions</li>
-    </ul>
-    <button class="btn" id="cardPay" type="button">Pay by card</button>
-    <p class="msg" id="wallmsg" role="status" aria-live="polite"></p>
-
-    <div class="claim" id="claimBox">
-      <p class="claim-lead">Already paid?</p>
-      <input id="payNote" type="text" inputmode="text" autocomplete="off" spellcheck="false" placeholder="Your name or payment reference (optional)" maxlength="200">
-      <button class="btn small" id="claimBtn" type="button">I've paid — Unlock</button>
-      <p class="msg" id="claimMsg" role="status" aria-live="polite"></p>
-    </div>
-  </section>
-
-  <!-- App -->
-  <div id="app" hidden>
-    <div class="toolbar">
-      <label class="search"><input id="q" type="search" placeholder="Search by meaning, sound or surah" aria-label="Search Doas" autocomplete="off"></label>
-      <div class="chips" id="chips" role="group" aria-label="Filter by theme"></div>
-    </div>
-    <div class="prefs" role="group" aria-label="Display options">
-      <button class="tog" data-action="pref" data-k="tr" aria-pressed="true">Transliteration</button>
-      <button class="tog" data-action="pref" data-k="en" aria-pressed="true">Meaning</button>
-      <span class="sizer" role="group" aria-label="Arabic text size">
-        <button data-action="size" data-d="-2" aria-label="Smaller Arabic text">A−</button>
-        <button data-action="size" data-d="2" aria-label="Larger Arabic text">A+</button>
-      </span>
-    </div>
-    <p class="status" id="status" aria-live="polite"></p>
-    <section id="list"></section>
-    <div class="bottom"></div>
+<main class="wrap">
+  <div class="toolbar">
+    <label class="search">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="Search by meaning, sound, or surah" aria-label="Search doas" autocomplete="off">
+    </label>
+    <div class="chips" id="chips" role="group" aria-label="Filter by theme"></div>
   </div>
+
+  <div class="prefs" role="group" aria-label="Display options">
+    <button class="tog" data-action="pref" data-k="tr" aria-pressed="true">Transliteration</button>
+    <button class="tog" data-action="pref" data-k="en" aria-pressed="true">Meaning</button>
+    <span class="sizer" role="group" aria-label="Arabic text size">
+      <button data-action="size" data-d="-2" aria-label="Smaller Arabic text">A−</button>
+      <button data-action="size" data-d="2" aria-label="Larger Arabic text">A+</button>
+    </span>
+    <button class="tog" data-action="reciter" id="reciterBtn">Reciter: Alafasy</button>
+    <button class="tog" data-action="script" id="scriptBtn">Arabic: Calligraphy</button>
+  </div>
+  <p class="status" id="status" aria-live="polite"></p>
+
+  <section id="list"></section>
+
+  <footer>
+    The Arabic is from the Qur'an. The English lines are short paraphrases of the meaning, not a full translation or commentary. Please check the wording against your own mushaf, and read a trusted translation for the fuller context. Recitations stream from public Qur'an audio servers. For correct tajweed, learn with a qualified teacher and use the recordings as a companion. The 40 Rabbana doas follow the commonly shared list, with Al-Baqarah 2:286 counted as three. My Doas App Premium is ₹1,299 per year.
+  </footer>
 </main>
 
+<div id="sheet" class="sheet" hidden>
+  <div class="sheet-bg" data-action="closesheet"></div>
+  <div class="sheet-panel" id="sheetPanel" role="dialog" aria-modal="true" aria-labelledby="sheetTitle"></div>
+</div>
 <div id="toast" role="status" aria-live="polite"></div>
 
 <script>
@@ -200,6 +226,7 @@ body.in-app .bism{font-size:24px;margin-top:4px}
 
 var CATS=[
   {id:'all',label:'All'},
+  {id:'rabbana',label:'Rabbana (40)'},
   {id:'fav',label:'Saved'},
   {id:'forgiveness',label:'Forgiveness'},
   {id:'guidance',label:'Guidance & faith'},
@@ -209,125 +236,493 @@ var CATS=[
   {id:'knowledge',label:'Knowledge & success'},
   {id:'trust',label:'Gratitude & trust'},
   {id:'hardship',label:'Hardship & relief'},
-  {id:'both',label:'This world & the next'},
-  {id:'last',label:'Last part of the Qur\'an'}
+  {id:'both',label:'This world & the next'}
 ];
-var BASES=['https://everyayah.com/data/Alafasy_128kbps/','https://verses.quran.foundation/Alafasy/mp3/'];
-var TOKEN_KEY='doas:token',CACHE_KEY='doas:cache';
 
+/* D(category, reference, [surah, fromVerse, toVerse], arabic, transliteration, meaning, note, flags)
+   flags: r = one of the 40 Rabbana doas, w = the recording is exactly the doa, f = free plan */
+function D(cat,ref,au,ar,tr,en,note,fl){
+  fl=fl||'';
+  return {cat:cat,ref:ref,au:au,ar:ar,tr:tr,en:en,note:note||'',
+    rab:fl.indexOf('r')>-1,whole:fl.indexOf('w')>-1,free:fl.indexOf('f')>-1};
+}
+
+var DUAS=[
+D('guidance',`Al-Fatihah 1:6`,[1,6,6],
+ `اهْدِنَا الصِّرَاطَ الْمُسْتَقِيمَ`,
+ `Ihdinas-siratal-mustaqeem.`,
+ `Guide us along the straight path.`,
+ `Recited in every unit of the daily prayer.`,'wf'),
+D('guidance',`Al-Baqarah 2:127`,[2,127,127],
+ `رَبَّنَا تَقَبَّلْ مِنَّا ۖ إِنَّكَ أَنتَ السَّمِيعُ الْعَلِيمُ`,
+ `Rabbana taqabbal minna, innaka antas-Sami'ul-'Alim.`,
+ `Our Lord, accept this from us. You are the All-Hearing, the All-Knowing.`,
+ `Prophets Ibrahim and Ismail, while raising the foundations of the Kaʿbah.`,'r'),
+D('family',`Al-Baqarah 2:128`,[2,128,128],
+ `رَبَّنَا وَاجْعَلْنَا مُسْلِمَيْنِ لَكَ وَمِن ذُرِّيَّتِنَا أُمَّةً مُّسْلِمَةً لَّكَ وَأَرِنَا مَنَاسِكَنَا وَتُبْ عَلَيْنَا ۖ إِنَّكَ أَنتَ التَّوَّابُ الرَّحِيمُ`,
+ `Rabbana waj'alna muslimayni laka wa min dhurriyyatina ummatan muslimatan laka, wa arina manasikana wa tub 'alayna, innaka antat-Tawwabur-Rahim.`,
+ `Our Lord, make us devoted to You, and raise from our descendants a community devoted to You. Show us how to worship, and turn to us in mercy. You are the Ever-Accepting of repentance, the Most Merciful.`,
+ `Prophets Ibrahim and Ismail.`,'rw'),
+D('both',`Al-Baqarah 2:201`,[2,201,201],
+ `رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ`,
+ `Rabbana atina fid-dunya hasanatan wa fil-akhirati hasanatan wa qina 'adhaban-nar.`,
+ `Our Lord, give us good in this world and good in the Hereafter, and protect us from the punishment of the Fire.`,
+ ``,'rf'),
+D('patience',`Al-Baqarah 2:250`,[2,250,250],
+ `رَبَّنَا أَفْرِغْ عَلَيْنَا صَبْرًا وَثَبِّتْ أَقْدَامَنَا وَانصُرْنَا عَلَى الْقَوْمِ الْكَافِرِينَ`,
+ `Rabbana afrigh 'alayna sabran wa thabbit aqdamana wansurna 'alal-qawmil-kafirin.`,
+ `Our Lord, pour patience over us, keep our feet firm, and help us against those who reject the truth.`,
+ `The believers with Talut, as they faced Jalut (Goliath).`,'r'),
+D('forgiveness',`Al-Baqarah 2:286 (part 1)`,[2,286,286],
+ `رَبَّنَا لَا تُؤَاخِذْنَا إِن نَّسِينَا أَوْ أَخْطَأْنَا`,
+ `Rabbana la tu'akhidhna in nasina aw akhta'na.`,
+ `Our Lord, do not hold us to account if we forget or make a mistake.`,
+ `From the closing verse of Surah Al-Baqarah, which holds three Rabbana doas.`,'rf'),
+D('forgiveness',`Al-Baqarah 2:286 (part 2)`,[2,286,286],
+ `رَبَّنَا وَلَا تَحْمِلْ عَلَيْنَا إِصْرًا كَمَا حَمَلْتَهُ عَلَى الَّذِينَ مِن قَبْلِنَا`,
+ `Rabbana wa la tahmil 'alayna isran kama hamaltahu 'alal-ladhina min qablina.`,
+ `Our Lord, do not lay on us a burden like the one You laid on those before us.`,
+ ``,'r'),
+D('forgiveness',`Al-Baqarah 2:286 (part 3)`,[2,286,286],
+ `رَبَّنَا وَلَا تُحَمِّلْنَا مَا لَا طَاقَةَ لَنَا بِهِ ۖ وَاعْفُ عَنَّا وَاغْفِرْ لَنَا وَارْحَمْنَا ۚ أَنتَ مَوْلَانَا فَانصُرْنَا عَلَى الْقَوْمِ الْكَافِرِينَ`,
+ `Rabbana wa la tuhammilna ma la taqata lana bih. Wa'fu 'anna, waghfir lana, warhamna. Anta mawlana fansurna 'alal-qawmil-kafirin.`,
+ `Our Lord, do not make us carry what we have no strength for. Pardon us, forgive us, and have mercy on us. You are our Protector, so help us against those who reject the truth.`,
+ ``,'r'),
+D('guidance',`Aal ʿImran 3:8`,[3,8,8],
+ `رَبَّنَا لَا تُزِغْ قُلُوبَنَا بَعْدَ إِذْ هَدَيْتَنَا وَهَبْ لَنَا مِن لَّدُنكَ رَحْمَةً ۚ إِنَّكَ أَنتَ الْوَهَّابُ`,
+ `Rabbana la tuzigh qulubana ba'da idh hadaytana, wa hab lana min ladunka rahmah, innaka antal-Wahhab.`,
+ `Our Lord, do not let our hearts turn away after You have guided us, and grant us mercy from Yourself. You are the Ever-Giving.`,
+ `The prayer of those firmly grounded in knowledge.`,'rwf'),
+D('guidance',`Aal ʿImran 3:9`,[3,9,9],
+ `رَبَّنَا إِنَّكَ جَامِعُ النَّاسِ لِيَوْمٍ لَّا رَيْبَ فِيهِ ۚ إِنَّ اللَّهَ لَا يُخْلِفُ الْمِيعَادَ`,
+ `Rabbana innaka jami'un-nasi li-yawmin la rayba fih, innallaha la yukhliful-mi'ad.`,
+ `Our Lord, You will gather all people for a Day about which there is no doubt. Allah never breaks His promise.`,
+ `Continues the prayer of those firmly grounded in knowledge.`,'rw'),
+D('forgiveness',`Aal ʿImran 3:16`,[3,16,16],
+ `رَبَّنَا إِنَّنَا آمَنَّا فَاغْفِرْ لَنَا ذُنُوبَنَا وَقِنَا عَذَابَ النَّارِ`,
+ `Rabbana innana amanna faghfir lana dhunubana wa qina 'adhaban-nar.`,
+ `Our Lord, we believe, so forgive our sins and protect us from the punishment of the Fire.`,
+ `The prayer of the mindful believers.`,'r'),
+D('family',`Aal ʿImran 3:38`,[3,38,38],
+ `رَبِّ هَبْ لِي مِن لَّدُنكَ ذُرِّيَّةً طَيِّبَةً ۖ إِنَّكَ سَمِيعُ الدُّعَاءِ`,
+ `Rabbi hab li min ladunka dhurriyyatan tayyibah, innaka Sami'ud-du'a.`,
+ `My Lord, grant me, from Yourself, good children. You are the Hearer of every prayer.`,
+ `Prophet Zakariyya, asking for a child.`,''),
+D('guidance',`Aal ʿImran 3:53`,[3,53,53],
+ `رَبَّنَا آمَنَّا بِمَا أَنزَلْتَ وَاتَّبَعْنَا الرَّسُولَ فَاكْتُبْنَا مَعَ الشَّاهِدِينَ`,
+ `Rabbana amanna bima anzalta wattaba'nar-rasula faktubna ma'ash-shahidin.`,
+ `Our Lord, we believe in what You have sent down and we follow the Messenger, so record us among those who bear witness.`,
+ `The disciples of Prophet Isa (Jesus).`,'rw'),
+D('patience',`Aal ʿImran 3:147`,[3,147,147],
+ `رَبَّنَا اغْفِرْ لَنَا ذُنُوبَنَا وَإِسْرَافَنَا فِي أَمْرِنَا وَثَبِّتْ أَقْدَامَنَا وَانصُرْنَا عَلَى الْقَوْمِ الْكَافِرِينَ`,
+ `Rabbanaghfir lana dhunubana wa israfana fi amrina, wa thabbit aqdamana wansurna 'alal-qawmil-kafirin.`,
+ `Our Lord, forgive our sins and our excesses in our affairs, keep our feet firm, and help us against those who reject the truth.`,
+ `The faithful followers of earlier prophets in times of hardship.`,'r'),
+D('protection',`Aal ʿImran 3:191`,[3,191,191],
+ `رَبَّنَا مَا خَلَقْتَ هَٰذَا بَاطِلًا سُبْحَانَكَ فَقِنَا عَذَابَ النَّارِ`,
+ `Rabbana ma khalaqta hadha batila, subhanaka faqina 'adhaban-nar.`,
+ `Our Lord, You did not create all this without purpose. Glory be to You. Protect us from the punishment of the Fire.`,
+ `Those who reflect on the creation of the heavens and the earth.`,'r'),
+D('protection',`Aal ʿImran 3:192`,[3,192,192],
+ `رَبَّنَا إِنَّكَ مَن تُدْخِلِ النَّارَ فَقَدْ أَخْزَيْتَهُ ۖ وَمَا لِلظَّالِمِينَ مِنْ أَنصَارٍ`,
+ `Rabbana innaka man tudkhilin-nara faqad akhzaytah, wa ma liz-zalimina min ansar.`,
+ `Our Lord, whoever You admit to the Fire, You have truly disgraced. The wrongdoers will have no helpers.`,
+ `Those who reflect on the creation of the heavens and the earth.`,'rw'),
+D('forgiveness',`Aal ʿImran 3:193`,[3,193,193],
+ `رَّبَّنَا إِنَّنَا سَمِعْنَا مُنَادِيًا يُنَادِي لِلْإِيمَانِ أَنْ آمِنُوا بِرَبِّكُمْ فَآمَنَّا ۚ رَبَّنَا فَاغْفِرْ لَنَا ذُنُوبَنَا وَكَفِّرْ عَنَّا سَيِّئَاتِنَا وَتَوَفَّنَا مَعَ الْأَبْرَارِ`,
+ `Rabbana innana sami'na munadiyan yunadi lil-imani an aminu bi-Rabbikum fa amanna. Rabbana faghfir lana dhunubana wa kaffir 'anna sayyi'atina wa tawaffana ma'al-abrar.`,
+ `Our Lord, we heard a caller inviting to faith, saying "Believe in your Lord," and we believed. Our Lord, forgive our sins, wipe away our wrongdoings, and let us die among the righteous.`,
+ ``,'rw'),
+D('both',`Aal ʿImran 3:194`,[3,194,194],
+ `رَبَّنَا وَآتِنَا مَا وَعَدتَّنَا عَلَىٰ رُسُلِكَ وَلَا تُخْزِنَا يَوْمَ الْقِيَامَةِ ۗ إِنَّكَ لَا تُخْلِفُ الْمِيعَادَ`,
+ `Rabbana wa atina ma wa'adtana 'ala rusulika wa la tukhzina yawmal-qiyamah, innaka la tukhliful-mi'ad.`,
+ `Our Lord, give us what You promised through Your messengers, and do not disgrace us on the Day of Resurrection. You never break Your promise.`,
+ ``,'rw'),
+D('hardship',`An-Nisa 4:75`,[4,75,75],
+ `رَبَّنَا أَخْرِجْنَا مِنْ هَٰذِهِ الْقَرْيَةِ الظَّالِمِ أَهْلُهَا وَاجْعَل لَّنَا مِن لَّدُنكَ وَلِيًّا وَاجْعَل لَّنَا مِن لَّدُنكَ نَصِيرًا`,
+ `Rabbana akhrijna min hadhihil-qaryatiz-zalimi ahluha, waj'al lana min ladunka waliyyan, waj'al lana min ladunka nasira.`,
+ `Our Lord, bring us out of this town whose people are oppressive, and send us from Yourself a protector and a helper.`,
+ `The prayer of the oppressed, asking for relief and protection.`,'r'),
+D('guidance',`Al-Maʾidah 5:83`,[5,83,83],
+ `رَبَّنَا آمَنَّا فَاكْتُبْنَا مَعَ الشَّاهِدِينَ`,
+ `Rabbana amanna faktubna ma'ash-shahidin.`,
+ `Our Lord, we believe, so record us among those who bear witness.`,
+ `Those whose eyes filled with tears on hearing the revelation.`,'r'),
+D('trust',`Al-Maʾidah 5:114`,[5,114,114],
+ `رَبَّنَا أَنزِلْ عَلَيْنَا مَائِدَةً مِّنَ السَّمَاءِ تَكُونُ لَنَا عِيدًا لِّأَوَّلِنَا وَآخِرِنَا وَآيَةً مِّنكَ ۖ وَارْزُقْنَا وَأَنتَ خَيْرُ الرَّازِقِينَ`,
+ `Rabbana anzil 'alayna ma'idatan minas-sama'i takunu lana 'idan li-awwalina wa akhirina wa ayatan minka, warzuqna wa anta khayrur-raziqin.`,
+ `Our Lord, send down to us a table spread from heaven, to be a festival for the first of us and the last of us, and a sign from You. Provide for us, for You are the best of providers.`,
+ `Prophet Isa (Jesus). Often recited when asking for provision.`,'r'),
+D('forgiveness',`Al-Aʿraf 7:23`,[7,23,23],
+ `رَبَّنَا ظَلَمْنَا أَنفُسَنَا وَإِن لَّمْ تَغْفِرْ لَنَا وَتَرْحَمْنَا لَنَكُونَنَّ مِنَ الْخَاسِرِينَ`,
+ `Rabbana zalamna anfusana, wa il-lam taghfir lana wa tarhamna lanakunanna minal-khasirin.`,
+ `Our Lord, we have wronged ourselves. If You do not forgive us and have mercy on us, we will surely be among the losers.`,
+ `Adam and Hawwa, after their mistake.`,'r'),
+D('protection',`Al-Aʿraf 7:47`,[7,47,47],
+ `رَبَّنَا لَا تَجْعَلْنَا مَعَ الْقَوْمِ الظَّالِمِينَ`,
+ `Rabbana la taj'alna ma'al-qawmiz-zalimin.`,
+ `Our Lord, do not place us with the wrongdoing people.`,
+ `The people of the Heights, when they see the Fire.`,'r'),
+D('hardship',`Al-Aʿraf 7:89`,[7,89,89],
+ `رَبَّنَا افْتَحْ بَيْنَنَا وَبَيْنَ قَوْمِنَا بِالْحَقِّ وَأَنتَ خَيْرُ الْفَاتِحِينَ`,
+ `Rabbanaftah baynana wa bayna qawmina bil-haqqi wa anta khayrul-fatihin.`,
+ `Our Lord, judge between us and our people with truth. You are the best of those who judge.`,
+ `Prophet Shuʿayb and his followers.`,'r'),
+D('patience',`Al-Aʿraf 7:126`,[7,126,126],
+ `رَبَّنَا أَفْرِغْ عَلَيْنَا صَبْرًا وَتَوَفَّنَا مُسْلِمِينَ`,
+ `Rabbana afrigh 'alayna sabran wa tawaffana muslimin.`,
+ `Our Lord, pour patience over us and take our souls while we are in submission to You.`,
+ `The magicians who believed in Musa, under Pharaoh's threats.`,'r'),
+D('trust',`At-Tawbah 9:129`,[9,129,129],
+ `حَسْبِيَ اللَّهُ لَا إِلَٰهَ إِلَّا هُوَ ۖ عَلَيْهِ تَوَكَّلْتُ ۖ وَهُوَ رَبُّ الْعَرْشِ الْعَظِيمِ`,
+ `Hasbiyallahu la ilaha illa huwa, 'alayhi tawakkaltu wa huwa Rabbul-'Arshil-'Azim.`,
+ `Allah is enough for me. There is no god but Him. In Him I place my trust, and He is Lord of the Mighty Throne.`,
+ ``,''),
+D('protection',`Yunus 10:85–86`,[10,85,86],
+ `رَبَّنَا لَا تَجْعَلْنَا فِتْنَةً لِّلْقَوْمِ الظَّالِمِينَ وَنَجِّنَا بِرَحْمَتِكَ مِنَ الْقَوْمِ الْكَافِرِينَ`,
+ `Rabbana la taj'alna fitnatan lil-qawmiz-zalimin, wa najjina bi-rahmatika minal-qawmil-kafirin.`,
+ `Our Lord, do not make us a trial for the wrongdoing people, and save us, by Your mercy, from those who reject the truth.`,
+ `The believers who followed Musa.`,'r'),
+D('family',`Ibrahim 14:37`,[14,37,37],
+ `رَّبَّنَا إِنِّي أَسْكَنتُ مِن ذُرِّيَّتِي بِوَادٍ غَيْرِ ذِي زَرْعٍ عِندَ بَيْتِكَ الْمُحَرَّمِ رَبَّنَا لِيُقِيمُوا الصَّلَاةَ فَاجْعَلْ أَفْئِدَةً مِّنَ النَّاسِ تَهْوِي إِلَيْهِمْ وَارْزُقْهُم مِّنَ الثَّمَرَاتِ لَعَلَّهُمْ يَشْكُرُونَ`,
+ `Rabbana inni askantu min dhurriyyati bi-wadin ghayri dhi zar'in 'inda baytikal-muharram, Rabbana li-yuqimus-salata faj'al af'idatan minan-nasi tahwi ilayhim warzuqhum minath-thamarati la'allahum yashkurun.`,
+ `Our Lord, I have settled some of my children in a barren valley near Your Sacred House, so that they may keep up the prayer. Make the hearts of people incline toward them, and provide them with fruits, so that they may be thankful.`,
+ `Prophet Ibrahim, when he left Hajar and Ismail in Makkah.`,'rw'),
+D('trust',`Ibrahim 14:38`,[14,38,38],
+ `رَبَّنَا إِنَّكَ تَعْلَمُ مَا نُخْفِي وَمَا نُعْلِنُ ۗ وَمَا يَخْفَىٰ عَلَى اللَّهِ مِن شَيْءٍ فِي الْأَرْضِ وَلَا فِي السَّمَاءِ`,
+ `Rabbana innaka ta'lamu ma nukhfi wa ma nu'lin, wa ma yakhfa 'alallahi min shay'in fil-ardi wa la fis-sama'.`,
+ `Our Lord, You know what we hide and what we reveal. Nothing on earth or in heaven is hidden from Allah.`,
+ `Prophet Ibrahim.`,'rw'),
+D('family',`Ibrahim 14:40`,[14,40,40],
+ `رَبِّ اجْعَلْنِي مُقِيمَ الصَّلَاةِ وَمِن ذُرِّيَّتِي ۚ رَبَّنَا وَتَقَبَّلْ دُعَاءِ`,
+ `Rabbij'alni muqimas-salati wa min dhurriyyati, Rabbana wa taqabbal du'a.`,
+ `My Lord, make me one who keeps up the prayer, and my children too. Our Lord, accept my prayer.`,
+ `Prophet Ibrahim.`,'rw'),
+D('family',`Ibrahim 14:41`,[14,41,41],
+ `رَبَّنَا اغْفِرْ لِي وَلِوَالِدَيَّ وَلِلْمُؤْمِنِينَ يَوْمَ يَقُومُ الْحِسَابُ`,
+ `Rabbanaghfir li wa li-walidayya wa lil-mu'minina yawma yaqumul-hisab.`,
+ `Our Lord, forgive me, my parents, and the believers on the Day when the reckoning is established.`,
+ `Prophet Ibrahim.`,'rw'),
+D('family',`Al-Isra 17:24`,[17,24,24],
+ `رَّبِّ ارْحَمْهُمَا كَمَا رَبَّيَانِي صَغِيرًا`,
+ `Rabbir-hamhuma kama rabbayani saghira.`,
+ `My Lord, have mercy on them both, as they raised me when I was small.`,
+ `For one's parents.`,'f'),
+D('knowledge',`Al-Isra 17:80`,[17,80,80],
+ `رَّبِّ أَدْخِلْنِي مُدْخَلَ صِدْقٍ وَأَخْرِجْنِي مُخْرَجَ صِدْقٍ وَاجْعَل لِّي مِن لَّدُنكَ سُلْطَانًا نَّصِيرًا`,
+ `Rabbi adkhilni mudkhala sidqin wa akhrijni mukhraja sidqin, waj'al li min ladunka sultanan nasira.`,
+ `My Lord, let me enter in a truthful way and leave in a truthful way, and grant me from Yourself a supporting power.`,
+ `For a sincere start and finish to any undertaking.`,''),
+D('guidance',`Al-Kahf 18:10`,[18,10,10],
+ `رَبَّنَا آتِنَا مِن لَّدُنكَ رَحْمَةً وَهَيِّئْ لَنَا مِنْ أَمْرِنَا رَشَدًا`,
+ `Rabbana atina min ladunka rahmatan wa hayyi' lana min amrina rashada.`,
+ `Our Lord, grant us mercy from Yourself, and prepare for us right guidance in our situation.`,
+ `The young men who took refuge in the cave.`,'r'),
+D('knowledge',`Ta-Ha 20:25–28`,[20,25,28],
+ `رَبِّ اشْرَحْ لِي صَدْرِي وَيَسِّرْ لِي أَمْرِي وَاحْلُلْ عُقْدَةً مِّن لِّسَانِي يَفْقَهُوا قَوْلِي`,
+ `Rabbishrah li sadri, wa yassir li amri, wahlul 'uqdatan min lisani, yafqahu qawli.`,
+ `My Lord, open up my heart for me, make my task easy, and untie the knot in my tongue so that they understand my words.`,
+ `Prophet Musa, when sent to Pharaoh. Often recited before speaking, studying, or exams.`,''),
+D('protection',`Ta-Ha 20:45`,[20,45,45],
+ `رَبَّنَا إِنَّنَا نَخَافُ أَن يَفْرُطَ عَلَيْنَا أَوْ أَن يَطْغَىٰ`,
+ `Rabbana innana nakhafu ay yafruta 'alayna aw ay yatgha.`,
+ `Our Lord, we fear that he may harm us or become overbearing.`,
+ `Prophets Musa and Harun, when sent to Pharaoh.`,'r'),
+D('knowledge',`Ta-Ha 20:114`,[20,114,114],
+ `رَّبِّ زِدْنِي عِلْمًا`,
+ `Rabbi zidni 'ilma.`,
+ `My Lord, increase me in knowledge.`,
+ ``,'f'),
+D('hardship',`Al-Anbiya 21:83`,[21,83,83],
+ `أَنِّي مَسَّنِيَ الضُّرُّ وَأَنتَ أَرْحَمُ الرَّاحِمِينَ`,
+ `Anni massaniyad-durru wa anta arhamur-rahimin.`,
+ `Hardship has touched me, and You are the most merciful of the merciful.`,
+ `Prophet Ayyub (Job), in his illness and loss.`,''),
+D('hardship',`Al-Anbiya 21:87`,[21,87,87],
+ `لَّا إِلَٰهَ إِلَّا أَنتَ سُبْحَانَكَ إِنِّي كُنتُ مِنَ الظَّالِمِينَ`,
+ `La ilaha illa anta, subhanaka, inni kuntu minaz-zalimin.`,
+ `There is no god but You. Glory be to You. I have truly been among the wrongdoers.`,
+ `Prophet Yunus (Jonah), from the darkness of the whale.`,'f'),
+D('knowledge',`Al-Muʾminun 23:29`,[23,29,29],
+ `رَّبِّ أَنزِلْنِي مُنزَلًا مُّبَارَكًا وَأَنتَ خَيْرُ الْمُنزِلِينَ`,
+ `Rabbi anzilni munzalan mubarakan wa anta khayrul-munzilin.`,
+ `My Lord, let me land in a blessed place. You are the best of those who bring to a safe landing.`,
+ `Prophet Nuh, on settling in the ark. Often recited when arriving somewhere new.`,''),
+D('protection',`Al-Muʾminun 23:97–98`,[23,97,98],
+ `رَّبِّ أَعُوذُ بِكَ مِنْ هَمَزَاتِ الشَّيَاطِينِ وَأَعُوذُ بِكَ رَبِّ أَن يَحْضُرُونِ`,
+ `Rabbi a'udhu bika min hamazatish-shayatin, wa a'udhu bika Rabbi ay yahduroon.`,
+ `My Lord, I seek refuge in You from the whispers of the devils, and I seek refuge in You, my Lord, from their being near me.`,
+ ``,''),
+D('forgiveness',`Al-Muʾminun 23:109`,[23,109,109],
+ `رَبَّنَا آمَنَّا فَاغْفِرْ لَنَا وَارْحَمْنَا وَأَنتَ خَيْرُ الرَّاحِمِينَ`,
+ `Rabbana amanna faghfir lana warhamna wa anta khayrur-rahimin.`,
+ `Our Lord, we believe, so forgive us and have mercy on us. You are the best of those who show mercy.`,
+ `The believing servants of Allah.`,'r'),
+D('forgiveness',`Al-Muʾminun 23:118`,[23,118,118],
+ `رَّبِّ اغْفِرْ وَارْحَمْ وَأَنتَ خَيْرُ الرَّاحِمِينَ`,
+ `Rabbighfir warham wa anta khayrur-rahimin.`,
+ `My Lord, forgive and have mercy. You are the best of those who show mercy.`,
+ ``,''),
+D('protection',`Al-Furqan 25:65`,[25,65,65],
+ `رَبَّنَا اصْرِفْ عَنَّا عَذَابَ جَهَنَّمَ ۖ إِنَّ عَذَابَهَا كَانَ غَرَامًا`,
+ `Rabbanas-rif 'anna 'adhaba Jahannam, inna 'adhabaha kana gharama.`,
+ `Our Lord, turn the punishment of Hell away from us. Its punishment is a lasting torment.`,
+ `A description of the servants of the Most Merciful.`,'r'),
+D('family',`Al-Furqan 25:74`,[25,74,74],
+ `رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا`,
+ `Rabbana hab lana min azwajina wa dhurriyyatina qurrata a'yunin waj'alna lil-muttaqina imama.`,
+ `Our Lord, grant us spouses and children who are a joy to our eyes, and make us a good example for those mindful of You.`,
+ `A description of the servants of the Most Merciful.`,'r'),
+D('guidance',`Ash-Shuʿara 26:83`,[26,83,83],
+ `رَبِّ هَبْ لِي حُكْمًا وَأَلْحِقْنِي بِالصَّالِحِينَ`,
+ `Rabbi hab li hukman wa alhiqni bis-salihin.`,
+ `My Lord, grant me sound judgment and join me with the righteous.`,
+ `Prophet Ibrahim.`,'w'),
+D('forgiveness',`Al-Qasas 28:16`,[28,16,16],
+ `رَبِّ إِنِّي ظَلَمْتُ نَفْسِي فَاغْفِرْ لِي`,
+ `Rabbi inni zalamtu nafsi faghfir li.`,
+ `My Lord, I have wronged myself, so forgive me.`,
+ `Prophet Musa.`,''),
+D('hardship',`Al-Qasas 28:24`,[28,24,24],
+ `رَبِّ إِنِّي لِمَا أَنزَلْتَ إِلَيَّ مِنْ خَيْرٍ فَقِيرٌ`,
+ `Rabbi inni lima anzalta ilayya min khayrin faqir.`,
+ `My Lord, I am in need of whatever good You send down to me.`,
+ `Prophet Musa, alone and tired after arriving in Madyan.`,'f'),
+D('forgiveness',`Ghafir 40:7`,[40,7,7],
+ `رَبَّنَا وَسِعْتَ كُلَّ شَيْءٍ رَّحْمَةً وَعِلْمًا فَاغْفِرْ لِلَّذِينَ تَابُوا وَاتَّبَعُوا سَبِيلَكَ وَقِهِمْ عَذَابَ الْجَحِيمِ`,
+ `Rabbana wasi'ta kulla shay'in rahmatan wa 'ilman faghfir lilladhina tabu wattaba'u sabilaka wa qihim 'adhabal-jahim.`,
+ `Our Lord, Your mercy and knowledge encompass everything. Forgive those who turn back to You and follow Your path, and protect them from the punishment of the Blazing Fire.`,
+ `The angels who carry the Throne, praying for the believers.`,'r'),
+D('family',`Ghafir 40:8`,[40,8,8],
+ `رَبَّنَا وَأَدْخِلْهُمْ جَنَّاتِ عَدْنٍ الَّتِي وَعَدتَّهُمْ وَمَن صَلَحَ مِنْ آبَائِهِمْ وَأَزْوَاجِهِمْ وَذُرِّيَّاتِهِمْ ۚ إِنَّكَ أَنتَ الْعَزِيزُ الْحَكِيمُ`,
+ `Rabbana wa adkhilhum jannati 'adnin allati wa'adtahum wa man salaha min aba'ihim wa azwajihim wa dhurriyyatihim, innaka antal-'Azizul-Hakim.`,
+ `Our Lord, admit them to the gardens of Eden that You promised them, along with the righteous among their parents, spouses and children. You are the Almighty, the All-Wise.`,
+ `The angels who carry the Throne, praying for the believers.`,'rw'),
+D('hardship',`Ad-Dukhan 44:12`,[44,12,12],
+ `رَبَّنَا اكْشِفْ عَنَّا الْعَذَابَ إِنَّا مُؤْمِنُونَ`,
+ `Rabbanak-shif 'annal-'adhaba inna mu'minun.`,
+ `Our Lord, remove the suffering from us. We do believe.`,
+ `A cry for relief in a time of severe hardship.`,'rw'),
+D('trust',`Al-Ahqaf 46:15`,[46,15,15],
+ `رَبِّ أَوْزِعْنِي أَنْ أَشْكُرَ نِعْمَتَكَ الَّتِي أَنْعَمْتَ عَلَيَّ وَعَلَىٰ وَالِدَيَّ وَأَنْ أَعْمَلَ صَالِحًا تَرْضَاهُ وَأَصْلِحْ لِي فِي ذُرِّيَّتِي ۖ إِنِّي تُبْتُ إِلَيْكَ وَإِنِّي مِنَ الْمُسْلِمِينَ`,
+ `Rabbi awzi'ni an ashkura ni'mataka allati an'amta 'alayya wa 'ala walidayya, wa an a'mala salihan tardahu, wa aslih li fi dhurriyyati, inni tubtu ilayka wa inni minal-muslimin.`,
+ `My Lord, inspire me to be thankful for the blessings You gave me and my parents, to do good that pleases You, and to make my children righteous. I turn to You in repentance, and I am among those who submit.`,
+ `For one who has reached maturity.`,''),
+D('forgiveness',`Al-Hashr 59:10`,[59,10,10],
+ `رَبَّنَا اغْفِرْ لَنَا وَلِإِخْوَانِنَا الَّذِينَ سَبَقُونَا بِالْإِيمَانِ وَلَا تَجْعَلْ فِي قُلُوبِنَا غِلًّا لِّلَّذِينَ آمَنُوا رَبَّنَا إِنَّكَ رَءُوفٌ رَّحِيمٌ`,
+ `Rabbanaghfir lana wa li-ikhwaninal-ladhina sabaquna bil-iman, wa la taj'al fi qulubina ghillan lilladhina amanu, Rabbana innaka Ra'ufur-Rahim.`,
+ `Our Lord, forgive us and our brothers and sisters who came before us in faith, and do not let any bitterness toward the believers settle in our hearts. Our Lord, You are Kind and Merciful.`,
+ `Those who came after the first believers.`,'r'),
+D('trust',`Al-Mumtahanah 60:4`,[60,4,4],
+ `رَّبَّنَا عَلَيْكَ تَوَكَّلْنَا وَإِلَيْكَ أَنَبْنَا وَإِلَيْكَ الْمَصِيرُ`,
+ `Rabbana 'alayka tawakkalna wa ilayka anabna wa ilaykal-masir.`,
+ `Our Lord, in You we place our trust, to You we turn, and to You is the final return.`,
+ `Prophet Ibrahim and those with him.`,'r'),
+D('protection',`Al-Mumtahanah 60:5`,[60,5,5],
+ `رَبَّنَا لَا تَجْعَلْنَا فِتْنَةً لِّلَّذِينَ كَفَرُوا وَاغْفِرْ لَنَا رَبَّنَا ۖ إِنَّكَ أَنتَ الْعَزِيزُ الْحَكِيمُ`,
+ `Rabbana la taj'alna fitnatan lilladhina kafaru waghfir lana Rabbana, innaka antal-'Azizul-Hakim.`,
+ `Our Lord, do not make us a trial for those who reject the truth, and forgive us, our Lord. You are the Almighty, the All-Wise.`,
+ `Prophet Ibrahim and those with him.`,'rw'),
+D('guidance',`At-Tahrim 66:8`,[66,8,8],
+ `رَبَّنَا أَتْمِمْ لَنَا نُورَنَا وَاغْفِرْ لَنَا ۖ إِنَّكَ عَلَىٰ كُلِّ شَيْءٍ قَدِيرٌ`,
+ `Rabbana atmim lana nurana waghfir lana, innaka 'ala kulli shay'in Qadir.`,
+ `Our Lord, perfect our light for us and forgive us. You have power over all things.`,
+ `The believers on the Day of Judgment.`,'r')
+];
+
+var byId={},AUDIO={},RAB_COUNT=0;
+DUAS.forEach(function(d,i){
+  d.id='d'+(i+1);byId[d.id]=d;
+  AUDIO[d.id]={s:d.au[0],f:d.au[1],t:d.au[2],whole:d.whole};
+  if(d.rab){d.n=++RAB_COUNT;}
+});
+
+/* ---------- audio sources ---------- */
+var RECITERS={
+  alafasy:{name:'Alafasy',bases:['https://everyayah.com/data/Alafasy_128kbps/','https://verses.quran.foundation/Alafasy/mp3/']},
+  husary:{name:'Al-Husary',bases:['https://everyayah.com/data/Husary_128kbps/']}
+};
+var RECITER_ORDER=['alafasy','husary'];
+var RATES=[1,0.75,0.5];
+
+/* ---------- storage (always guarded) ---------- */
 var store={
   get:function(k,def){try{var v=window.localStorage.getItem(k);return v===null?def:JSON.parse(v);}catch(e){return def;}},
-  set:function(k,v){try{window.localStorage.setItem(k,JSON.stringify(v));}catch(e){}},
-  del:function(k){try{window.localStorage.removeItem(k);}catch(e){}}
+  set:function(k,v){try{window.localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
 };
 
-var state={doas:[],byId:{},q:'',cat:'all',cfg:null,busy:false,
-  fav:new Set(store.get('doas:favs',[])),
-  counts:store.get('doas:counts',{}),
-  prefs:Object.assign({tr:true,en:true,size:34},store.get('doas:prefs',{}))};
-if(!state.fav||typeof state.fav.has!=='function')state.fav=new Set();
-if(!state.counts||typeof state.counts!=='object')state.counts={};
+var state={
+  q:'',cat:'all',
+  fav:new Set(store.get('duas:favs',[])),
+  counts:store.get('duas:counts',{}),
+  prefs:Object.assign({tr:true,en:true,size:34,script:'calligraphy',reciter:'alafasy',rate:1,loop:false},store.get('duas:prefs',{}))
+};
+if(!state.fav||typeof state.fav.has!=='function'){state.fav=new Set();}
+if(!state.counts||typeof state.counts!=='object'){state.counts={};}
+if(!RECITERS[state.prefs.reciter]){state.prefs.reciter='alafasy';}
+if(RATES.indexOf(state.prefs.rate)===-1){state.prefs.rate=1;}
+if(state.prefs.script!=='naskh'){state.prefs.script='calligraphy';}
 
-function $(id){return document.getElementById(id);}
-function saveFavs(){store.set('doas:favs',Array.from(state.fav));}
-function saveCounts(){store.set('doas:counts',state.counts);}
-function savePrefs(){store.set('doas:prefs',state.prefs);}
+function saveFavs(){store.set('duas:favs',Array.from(state.fav));}
+function saveCounts(){store.set('duas:counts',state.counts);}
+function savePrefs(){store.set('duas:prefs',state.prefs);}
 
-var toastTimer=null;
-function toast(msg){var t=$('toast');t.textContent=msg;t.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(function(){t.classList.remove('show');},1800);}
-
-function api(path,opt){
-  return fetch(path,opt).then(function(r){
-    return r.json().catch(function(){return {};}).then(function(d){
-      if(!r.ok){var e=new Error(d.error||('Request failed ('+r.status+')'));e.status=r.status;throw e;}
-      return d;
+/* ---------- subscription ---------- */
+var CONFIG={
+  appName:'My Doas App',
+  currency:'₹',
+  priceINR:1299,
+  periodDays:365,
+  periodWord:'year',
+  /* Payments. Leave baseUrl empty for demo mode (no money is taken).
+     After you deploy the server from the /server folder, put its address here,
+     for example 'https://doas-api.example.com'. */
+  api:{baseUrl:''},
+  /* No server? Paste a hosted payment link here (for example a Razorpay Subscription Link or Payment Link).
+     The app then opens that page to take payment. */
+  subscribeUrl:'',
+  freeDuaIds:DUAS.filter(function(d){return d.free;}).map(function(d){return d.id;})
+};
+var SUB_KEY='mydoas:sub';
+function billingLive(){return !!(CONFIG.api&&CONFIG.api.baseUrl);}
+function getSub(){var v=store.get(SUB_KEY,null);return(v&&v.renewsAt)?v:null;}
+function isPremium(){var v=getSub();return !!v&&Date.parse(v.renewsAt)>Date.now();}
+function isUnlocked(d){return isPremium()||CONFIG.freeDuaIds.indexOf(d.id)!==-1;}
+function activateSub(){
+  var cur=getSub(),now=Date.now();
+  var base=(cur&&Date.parse(cur.renewsAt)>now)?Date.parse(cur.renewsAt):now; /* renewing early keeps the time left */
+  var end=new Date(base+CONFIG.periodDays*86400000);
+  store.set(SUB_KEY,{plan:'annual',priceINR:CONFIG.priceINR,startedAt:(cur&&cur.startedAt)||new Date(now).toISOString(),renewsAt:end.toISOString()});
+}
+function loadScript(src){
+  return new Promise(function(res,rej){
+    var t=document.createElement('script');t.src=src;t.onload=res;
+    t.onerror=function(){rej(new Error('Could not open the payment window. Check your connection.'));};
+    document.head.appendChild(t);
+  });
+}
+function apiPost(path,body){
+  return fetch(CONFIG.api.baseUrl.replace(/\/$/,'')+path,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body||{})})
+    .then(function(r){return r.json().then(function(j){if(!r.ok)throw new Error(j.error||'Request failed');return j;});});
+}
+/* Demo mode simulates a payment. Live mode: the server creates the order, Razorpay Checkout
+   collects the payment (UPI QR or app, cards, netbanking), and the server verifies the signature. */
+function startCheckout(){
+  if(!billingLive()){return new Promise(function(res){setTimeout(function(){res({ok:true});},900);});}
+  return Promise.all([loadScript('https://checkout.razorpay.com/v1/checkout.js'),apiPost('/api/create-order',{plan:'annual'})]).then(function(r){
+    var order=r[1];
+    return new Promise(function(resolve,reject){
+      var rz=new window.Razorpay({
+        key:order.keyId,amount:order.amount,currency:order.currency,order_id:order.orderId,
+        name:CONFIG.appName,description:'Premium for one '+CONFIG.periodWord+', '+priceText(),
+        theme:{color:'#eaa7b0'},
+        modal:{ondismiss:function(){reject(new Error('Payment cancelled'));}},
+        handler:function(resp){
+          apiPost('/api/verify-payment',{
+            razorpay_order_id:resp.razorpay_order_id,
+            razorpay_payment_id:resp.razorpay_payment_id,
+            razorpay_signature:resp.razorpay_signature
+          }).then(function(){resolve({ok:true});}).catch(reject);
+        }
+      });
+      rz.on('payment.failed',function(e){reject(new Error((e&&e.error&&e.error.description)||'The payment did not go through'));});
+      rz.open();
     });
   });
 }
-
-/* ---------- screens ---------- */
-function show(which){
-  document.body.classList.toggle('in-app',which==='app');
-  $('boot').hidden=which!=='boot';
-  $('paywall').hidden=which!=='paywall';
-  $('app').hidden=which!=='app';
+function fmtDate(iso){try{return new Date(iso).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});}catch(e){return '';}}
+function priceText(){return CONFIG.currency+CONFIG.priceINR.toLocaleString('en-IN');}
+function updatePremUI(){
+  var b=document.getElementById('premBtn');if(!b)return;
+  var on=isPremium();b.classList.toggle('on',on);
+  b.textContent=on?'Premium active':'Go Premium, '+priceText()+' per '+CONFIG.periodWord;
 }
-
-/* ---------- paywall + payment link ---------- */
-function setWallMsg(text,isErr){var m=$('wallmsg');m.textContent=text||'';m.classList.toggle('err',!!isErr);}
-function setClaimMsg(text,isErr){var m=$('claimMsg');m.textContent=text||'';m.classList.toggle('err',!!isErr);}
-
-function showPaywall(note){
-  show('paywall');
-  setWallMsg(note||'',false);
-  api('/api/config').then(function(cfg){
-    state.cfg=cfg;
-    $('cardPay').textContent='Pay by card — '+cfg.priceLabel;
-    $('cardPay').disabled=!cfg.checkoutReady;
-    $('claimBox').hidden=!cfg.checkoutReady;
-    if(!cfg.checkoutReady){
-      setWallMsg('Payments are being set up. Please check back soon.',false);
+function afterSubChange(){renderChips();renderFeatured();renderList();updatePremUI();}
+function payMode(){return billingLive()?'server':(CONFIG.subscribeUrl?'link':'demo');}
+var payStage='idle';
+function payBtn(label,ghost){
+  var cls='cta'+(ghost?' ghost':'');
+  if(payMode()==='link'){
+    return '<a class="'+cls+'" href="'+CONFIG.subscribeUrl+'" target="_blank" rel="noopener" data-action="linkopen">'+label+'</a>';
+  }
+  return '<button class="'+cls+'" data-action="subscribe">'+label+'</button>';
+}
+function finePrint(){
+  var m=payMode();
+  if(m==='server')return 'Pay with UPI (scan the QR code or use your UPI app), cards or netbanking.';
+  if(m==='link')return 'You pay on a secure payment page. Your receipt comes from the payment provider.';
+  return 'Demo mode: no payment is taken and nothing is charged.';
+}
+function renderSheet(reason){
+  var el=document.getElementById('sheetPanel'),h='',m=payMode();
+  h+='<button class="sheet-x" data-action="closesheet" aria-label="Close">'+IC.close+'</button>';
+  if(isPremium()){
+    var sub=getSub();
+    h+='<h2 id="sheetTitle">Premium is active</h2>';
+    h+='<p class="price"><strong>'+priceText()+'</strong> per '+CONFIG.periodWord+'</p>';
+    h+='<p class="sheet-text">Active until '+fmtDate(sub.renewsAt)+'.</p>';
+    if(m==='demo')h+='<p class="fine">Demo mode: no payment was taken.</p>';
+    if(m==='link'&&payStage==='opened'){
+      h+='<p class="sheet-text">Finished paying? Tap below to extend your Premium.</p>';
+      h+='<button class="cta" data-action="confirmpaid">I have paid, extend Premium</button>';
+      h+=payBtn('Open the payment page again',true);
+    }else{
+      h+=payBtn('Renew for another '+CONFIG.periodWord,true);
+      h+='<button class="cta" data-action="closesheet">Done</button>';
     }
-  }).catch(function(){
-    $('cardPay').disabled=true;
-    setWallMsg('Could not reach the server. Check your internet connection and reopen the app.',true);
-  });
+  }else{
+    h+='<h2 id="sheetTitle">My Doas App Premium</h2>';
+    if(reason)h+='<p class="sheet-reason">'+reason+'</p>';
+    h+='<p class="price"><strong>'+priceText()+'</strong> per '+CONFIG.periodWord+'</p>';
+    h+='<ul class="perks">'+
+      '<li>'+IC.check+'<span>All '+DUAS.length+' doas, including all 40 Rabbana doas</span></li>'+
+      '<li>'+IC.check+'<span>Recitation audio with slow speed and repeat</span></li>'+
+      '<li>'+IC.check+'<span>Save your favourite doas</span></li></ul>';
+    if(m==='link'&&payStage==='opened'){
+      h+='<p class="sheet-text">Finished paying? Tap below to unlock Premium.</p>';
+      h+='<button class="cta" data-action="confirmpaid">I have paid, unlock Premium</button>';
+      h+=payBtn('Open the payment page again',true);
+    }else{
+      h+=payBtn('Subscribe for '+priceText()+'/'+CONFIG.periodWord,false);
+    }
+    h+='<button class="cta ghost" data-action="closesheet">Not now</button>';
+    h+='<p class="fine">One payment of '+priceText()+' for a full '+CONFIG.periodWord+'. Renew whenever you like. '+finePrint()+'</p>';
+  }
+  el.innerHTML=h;
 }
-
-function payWithCard(){
-  if(!state.cfg||!state.cfg.checkoutUrl)return;
-  window.open(state.cfg.checkoutUrl,'_blank','noopener');
+function openSheet(reason){
+  payStage='idle';renderSheet(reason);
+  var sh=document.getElementById('sheet');sh.hidden=false;document.body.style.overflow='hidden';
+  var f=sh.querySelector('.cta');if(f)f.focus();
 }
-
-function claimPaid(){
-  var note=$('payNote').value.trim(),btn=$('claimBtn');
-  btn.disabled=true;setClaimMsg('Unlocking…',false);
-  api('/api/claim',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({note:note})}).then(function(d){
-    store.set(TOKEN_KEY,d.token);
-    return openWithToken(d.token);
-  }).catch(function(e){
-    btn.disabled=false;
-    setClaimMsg(e.message||'Could not unlock right now. Please try again.',true);
-  });
-}
-
-/* ---------- unlock + content ---------- */
-function openWithToken(token){
-  return api('/api/doas',{headers:{Authorization:'Bearer '+token}}).then(function(d){
-    store.set(CACHE_KEY,{doas:d.doas,exp:d.exp});
-    startApp(d.doas);
-  });
-}
-function startApp(doas){
-  state.doas=doas;state.byId={};
-  doas.forEach(function(d){state.byId[d.id]=d;});
-  applyPrefs();renderChips();renderList();
-  show('app');
-}
-
-function boot(){
-  var token=store.get(TOKEN_KEY,null);
-  if(!token){showPaywall();return;}
-  openWithToken(token).catch(function(e){
-    if(e&&e.status===401){store.del(TOKEN_KEY);store.del(CACHE_KEY);showPaywall('Your subscription has ended. Please pay again to continue.');return;}
-    var c=store.get(CACHE_KEY,null);
-    if(c&&c.doas&&c.exp>Date.now()){startApp(c.doas);return;}
-    showPaywall('Could not reach the server. Check your internet connection.');
-  });
-}
+function closeSheet(){document.getElementById('sheet').hidden=true;document.body.style.overflow='';}
+document.addEventListener('keydown',function(e){if(e.key==='Escape'&&!document.getElementById('sheet').hidden)closeSheet();});
 
 /* ---------- helpers ---------- */
 function catLabel(id){for(var i=0;i<CATS.length;i++){if(CATS[i].id===id)return CATS[i].label;}return '';}
-function norm(s){return String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/['’ʿʾ`\-]/g,'').replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim();}
-function stripAr(s){return String(s).replace(/[\u064B-\u065F\u0670\u06D6-\u06ED\u0640\u06DD\uFD3E\uFD3F]/g,'').replace(/[\u0622\u0623\u0625\u0671]/g,'\u0627');}
+function norm(s){
+  return String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')
+    .replace(/['’ʿʾ`\-]/g,'').replace(/[^a-z0-9\s]/g,' ').replace(/\s+/g,' ').trim();
+}
+function stripAr(s){return String(s).replace(/[\u064B-\u065F\u0670\u06D6-\u06ED\u0640]/g,'').replace(/[\u0622\u0623\u0625\u0671]/g,'\u0627');}
 function copyText(t){
   var p=null;
   try{if(navigator.clipboard&&navigator.clipboard.writeText){p=navigator.clipboard.writeText(t).then(function(){return true;});}}catch(e){p=null;}
-  if(!p)p=Promise.resolve(false);
+  if(!p){p=Promise.resolve(false);}
   return p.catch(function(){return false;}).then(function(ok){
     if(ok)return true;
-    try{var ta=document.createElement('textarea');ta.value=t;ta.setAttribute('readonly','');ta.style.cssText='position:fixed;opacity:0;top:0;left:0';document.body.appendChild(ta);ta.select();var r=document.execCommand('copy');ta.remove();return r;}catch(e){return false;}
+    try{
+      var ta=document.createElement('textarea');
+      ta.value=t;ta.setAttribute('readonly','');ta.style.cssText='position:fixed;opacity:0;top:0;left:0';
+      document.body.appendChild(ta);ta.select();
+      var r=document.execCommand('copy');ta.remove();return r;
+    }catch(e){return false;}
   });
+}
+var toastTimer=null;
+function toast(msg){
+  var t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');
+  clearTimeout(toastTimer);toastTimer=setTimeout(function(){t.classList.remove('show');},1800);
 }
 function shareText(d){return d.ar+'\n\n'+d.tr+'\n\n'+d.en+'\n\n— '+d.ref;}
 
@@ -338,43 +733,75 @@ var IC={
   copy:svg('<rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>'),
   share:svg('<circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><path d="M8.6 13.5l6.8 4M15.4 6.5l-6.8 4"/>'),
   reset:svg('<path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/>'),
+  shuffle:svg('<path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/>'),
   play:svg('<path d="M8 5v14l11-7z"/>','currentColor'),
   pause:svg('<rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/>','currentColor'),
-  load:svg('<path d="M12 3a9 9 0 1 0 9 9"/>')
+  load:svg('<path d="M12 3a9 9 0 1 0 9 9"/>'),
+  next:svg('<path d="m9 6 6 6-6 6"/>'),
+  lock:svg('<rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>'),
+  check:svg('<path d="m5 12 5 5 9-10"/>'),
+  close:svg('<path d="M6 6l12 12M18 6 6 18"/>')
 };
 
-/* ---------- audio ---------- */
-var AP={id:null,i:0,tryIdx:0,status:'idle',audio:null,wd:null};
-function pad3(n){return ('00'+n).slice(-3);}
-function srcFor(cfg,verse,idx){return BASES[idx]+pad3(cfg.s)+pad3(verse)+'.mp3';}
+/* ---------- audio player ---------- */
+var AP={id:null,i:0,tryIdx:0,status:'idle',audio:null};
+var seeking=false,wd=null;
+
+function srcList(cfg,verse){
+  var f=('00'+cfg.s).slice(-3)+('00'+verse).slice(-3)+'.mp3';
+  var r=RECITERS[state.prefs.reciter]||RECITERS.alafasy;
+  return r.bases.map(function(b){return b+f;});
+}
+function fmt(t){if(!isFinite(t)||t<0)t=0;var m=Math.floor(t/60),sec=Math.floor(t%60);return m+':'+(sec<10?'0':'')+sec;}
+
 function getAudio(){
   if(AP.audio)return AP.audio;
   var a=new Audio();a.preload='none';
-  a.addEventListener('playing',function(){clearTimeout(AP.wd);AP.status='playing';syncPlayers();});
+  try{a.preservesPitch=true;a.webkitPreservesPitch=true;a.mozPreservesPitch=true;}catch(e){}
+  a.addEventListener('playing',function(){clearTimeout(wd);AP.status='playing';syncPlayers();});
   a.addEventListener('pause',function(){if(AP.status==='playing'&&!a.ended){AP.status='paused';syncPlayers();}});
   a.addEventListener('waiting',function(){if(AP.status==='playing'){AP.status='loading';syncPlayers();}});
   a.addEventListener('timeupdate',syncPlayers);
+  a.addEventListener('loadedmetadata',syncPlayers);
   a.addEventListener('ended',onEnded);
-  a.addEventListener('error',function(){if(!AP.id||AP.status==='idle'||AP.status==='error')return;AP.tryIdx++;loadVerse();});
+  a.addEventListener('error',function(){
+    if(!AP.id||AP.status==='idle'||AP.status==='error')return;
+    AP.tryIdx++;loadVerse();
+  });
   AP.audio=a;return a;
 }
+function failAudio(){
+  clearTimeout(wd);AP.status='error';document.body.setAttribute('data-audio','link');
+  try{if(AP.audio)AP.audio.pause();}catch(e){}
+  syncPlayers();
+}
 function loadVerse(){
-  var d=state.byId[AP.id];if(!d||!d.audio)return;
-  var cfg=d.audio;
-  if(AP.tryIdx>=BASES.length){clearTimeout(AP.wd);AP.status='error';try{AP.audio.pause();}catch(e){}syncPlayers();return;}
-  var a=getAudio();AP.status='loading';a.src=srcFor(cfg,cfg.f+AP.i,AP.tryIdx);
-  clearTimeout(AP.wd);AP.wd=setTimeout(function(){if(AP.status==='loading'){AP.tryIdx++;loadVerse();}},10000);
+  var cfg=AUDIO[AP.id];if(!cfg)return;
+  var list=srcList(cfg,cfg.f+AP.i);
+  if(AP.tryIdx>=list.length){failAudio();return;}
+  var a=getAudio();
+  AP.status='loading';
+  a.src=list[AP.tryIdx];
+  a.defaultPlaybackRate=state.prefs.rate;a.playbackRate=state.prefs.rate;
+  clearTimeout(wd);
+  wd=setTimeout(function(){if(AP.status==='loading'){AP.tryIdx++;loadVerse();}},10000);
   syncPlayers();
   var pr=a.play();
-  if(pr&&pr.catch)pr.catch(function(err){if(err&&err.name==='NotAllowedError'){clearTimeout(AP.wd);AP.status='paused';syncPlayers();}});
+  if(pr&&pr.catch){pr.catch(function(err){
+    if(err&&err.name==='NotAllowedError'){clearTimeout(wd);AP.status='paused';syncPlayers();}
+  });}
 }
 function onEnded(){
-  var d=state.byId[AP.id];if(!d)return;
-  var n=d.audio.t-d.audio.f+1;
+  var cfg=AUDIO[AP.id];if(!cfg)return;
+  var n=cfg.t-cfg.f+1;
   if(AP.i<n-1){AP.i++;AP.tryIdx=0;loadVerse();}
+  else if(state.prefs.loop){AP.i=0;AP.tryIdx=0;loadVerse();}
   else{AP.status='idle';AP.i=0;syncPlayers();}
 }
-function stopCurrent(){clearTimeout(AP.wd);AP.status='idle';try{if(AP.audio)AP.audio.pause();}catch(e){}}
+function stopCurrent(){
+  clearTimeout(wd);AP.status='idle';
+  try{if(AP.audio)AP.audio.pause();}catch(e){}
+}
 function togglePlay(id){
   var a=getAudio();
   if(AP.id===id){
@@ -385,10 +812,10 @@ function togglePlay(id){
   stopCurrent();AP.id=id;AP.i=0;AP.tryIdx=0;loadVerse();
 }
 function syncPlayers(){
+  var a=AP.audio,rname=(RECITERS[state.prefs.reciter]||RECITERS.alafasy).name;
   document.querySelectorAll('.player').forEach(function(p){
-    var id=p.dataset.id,d=state.byId[id];if(!d||!d.audio)return;
-    var active=AP.id===id,st=active?AP.status:'idle',n=d.audio.t-d.audio.f+1;
-    var btn=p.querySelector('.pbtn'),tm=p.querySelector('.ptime'),bar=p.querySelector('.bar i');
+    var id=p.dataset.id,active=AP.id===id,st=active?AP.status:'idle';
+    var btn=p.querySelector('.pbtn'),seek=p.querySelector('.pseek'),tm=p.querySelector('.ptime');
     if(btn.dataset.st!==st){
       btn.dataset.st=st;
       btn.innerHTML=st==='playing'?IC.pause:(st==='loading'?IC.load:IC.play);
@@ -397,115 +824,272 @@ function syncPlayers(){
     }
     p.classList.toggle('err',st==='error');
     var txt;
-    if(st==='error')txt='Audio did not load. Open it on Quran.com.';
-    else if(st==='loading')txt='Loading…';
-    else if(st==='playing'||st==='paused')txt=(n>1?'Verse '+(AP.i+1)+' of '+n:'Playing');
-    else txt='Recitation by Alafasy';
+    if(st==='error'){txt='Audio didn\'t load. Use the Quran.com link below.';}
+    else if(st==='loading'){txt='Loading…';}
+    else if(st==='playing'||st==='paused'){
+      var cfg=AUDIO[id],n=cfg.t-cfg.f+1;
+      txt=fmt(a.currentTime)+' / '+fmt(a.duration)+(n>1?', verse '+(AP.i+1)+' of '+n:'');
+    }else{txt='Recitation by '+rname;}
     if(tm.textContent!==txt)tm.textContent=txt;
-    var pct=0,a=AP.audio;
-    if(active&&(st==='playing'||st==='paused')&&a&&isFinite(a.duration)&&a.duration>0)pct=Math.min(100,((AP.i+a.currentTime/a.duration)/n)*100);
-    bar.style.width=pct+'%';
+    if(!seeking){
+      seek.value=(active&&(st==='playing'||st==='paused')&&a&&isFinite(a.duration)&&a.duration>0)?Math.round(a.currentTime/a.duration*1000):0;
+    }
+    var rt=p.querySelector('[data-action="rate"]'),lp=p.querySelector('[data-action="loop"]');
+    var rl=state.prefs.rate+'×';
+    if(rt.textContent!==rl)rt.textContent=rl;
+    lp.setAttribute('aria-pressed',String(!!state.prefs.loop));
   });
 }
 function playerHTML(d){
-  if(!d.audio)return '';
-  var n=d.audio.t-d.audio.f+1;
-  var link='https://quran.com/'+d.audio.s+'/'+d.audio.f+(n>1?'-'+d.audio.t:'');
+  var cfg=AUDIO[d.id];if(!cfg)return '';
+  if(!isPremium())return '<button class="lockrow" data-action="paywall" data-reason="Recitation audio is a Premium feature.">'+IC.lock+'<span>Recitation audio is a Premium feature</span></button>';
+  var n=cfg.t-cfg.f+1;
+  var link='https://quran.com/'+cfg.s+'/'+cfg.f+(n>1?'-'+cfg.t:'');
+  var note=cfg.whole?'Recitation of the full verse.':'Plays the full verse, which includes words around the doa.';
+  var rname=(RECITERS[state.prefs.reciter]||RECITERS.alafasy).name;
+  var links='';
+  for(var k=0;k<n;k++){
+    links+='<a class="listen" href="'+srcList(cfg,cfg.f+k)[0]+'" target="_blank" rel="noopener">'+IC.play+'<span>'+(n>1?'Verse '+(cfg.f+k):'Listen')+'</span></a>';
+  }
   return '<div class="player" data-id="'+d.id+'">'+
-    '<button class="pbtn" data-action="play" data-id="'+d.id+'" aria-label="Play recitation">'+IC.play+'</button>'+
-    '<div class="pmid"><span class="ptime"></span><div class="bar"><i></i></div></div>'+
-    '<a class="plink" href="'+link+'" target="_blank" rel="noopener">Quran.com</a></div>';
+    '<div class="p-inline">'+
+      '<button class="pbtn" data-action="play" data-id="'+d.id+'" aria-label="Play recitation">'+IC.play+'</button>'+
+      '<div class="pmid"><input class="pseek" type="range" min="0" max="1000" step="1" value="0" data-id="'+d.id+'" aria-label="Seek recitation"><span class="ptime"></span></div>'+
+      '<button class="pchip" data-action="rate" aria-label="Playback speed"></button>'+
+      '<button class="pchip" data-action="loop" aria-pressed="false" aria-label="Repeat recitation">Loop</button>'+
+    '</div>'+
+    '<div class="p-link">'+links+'<span class="phint">Recitation by '+rname+'. Opens in a new tab.</span></div>'+
+    '</div>'+
+    '<p class="pfoot">'+note+' <a href="'+link+'" target="_blank" rel="noopener">Open on Quran.com</a></p>';
 }
 
 /* ---------- rendering ---------- */
-function cardHTML(d){
+function metaHTML(d){
+  return '<div class="meta"><span class="mleft"><span class="ref">'+d.ref+'</span>'+(d.n?'<span class="rn">Rabbana '+d.n+' of '+RAB_COUNT+'</span>':'')+'</span><span class="catl">'+catLabel(d.cat)+'</span></div>';
+}
+function lockedHTML(d){
+  return '<article class="card locked" data-id="'+d.id+'">'+metaHTML(d)+
+    '<button class="lockrow" data-action="paywall" aria-label="Unlock '+d.ref+' with Premium">'+IC.lock+'<span>Premium doa. Unlock all '+DUAS.length+' doas.</span></button></article>';
+}
+function cardHTML(d,featured){
+  if(!featured&&!isUnlocked(d))return lockedHTML(d);
   var on=state.fav.has(d.id),n=state.counts[d.id]||0;
-  var h='<article class="card" data-id="'+d.id+'">';
-  h+='<div class="meta"><span class="ref">'+d.ref+'</span><span class="catl">'+catLabel(d.cat)+'</span></div>';
+  var h='<article class="card'+(featured?' featured':'')+'" data-id="'+d.id+'">';
+  if(featured){
+    h+='<div class="feat-head"><span>Today\'s doa</span><button class="act" data-action="next" aria-label="Show next doa">'+IC.next+'<span>Next</span></button></div>';
+  }
+  h+=metaHTML(d);
   h+='<p class="ar" lang="ar" dir="rtl">'+d.ar+'</p>';
   h+=playerHTML(d);
   if(state.prefs.tr)h+='<p class="tr">'+d.tr+'</p>';
   if(state.prefs.en)h+='<p class="en">'+d.en+'</p>';
   if(d.note)h+='<p class="note">'+d.note+'</p>';
   h+='<div class="actions">';
-  h+='<button class="act'+(on?' on':'')+'" data-action="fav" data-id="'+d.id+'" aria-pressed="'+on+'" aria-label="'+(on?'Remove from saved':'Save Doa')+'">'+IC.heart(on)+'<span>'+(on?'Saved':'Save')+'</span></button>';
-  h+='<button class="act" data-action="copy" data-id="'+d.id+'" aria-label="Copy Doa">'+IC.copy+'<span>Copy</span></button>';
-  h+='<button class="act" data-action="share" data-id="'+d.id+'" aria-label="Share Doa">'+IC.share+'<span>Share</span></button>';
+  h+='<button class="act'+(on?' on':'')+'" data-action="fav" data-id="'+d.id+'" aria-pressed="'+on+'" aria-label="'+(on?'Remove from saved':'Save doa')+'">'+IC.heart(on)+'<span>'+(on?'Saved':'Save')+'</span></button>';
+  h+='<button class="act" data-action="copy" data-id="'+d.id+'" aria-label="Copy doa">'+IC.copy+'<span>Copy</span></button>';
+  h+='<button class="act" data-action="share" data-id="'+d.id+'" aria-label="Share doa">'+IC.share+'<span>Share</span></button>';
   h+='<span class="spacer"></span>';
   if(n>0)h+='<button class="act reset" data-action="reset" data-id="'+d.id+'" aria-label="Reset counter">'+IC.reset+'</button>';
   h+='<button class="count" data-action="count" data-id="'+d.id+'" aria-label="Count repetitions">'+(n>0?'×'+n:'Count')+'</button>';
   h+='</div></article>';
   return h;
 }
+
 function matches(d){
   if(state.cat==='fav'&&!state.fav.has(d.id))return false;
-  if(state.cat!=='all'&&state.cat!=='fav'&&d.cat!==state.cat)return false;
+  if(state.cat==='rabbana'&&!d.rab)return false;
+  if(state.cat!=='all'&&state.cat!=='fav'&&state.cat!=='rabbana'&&d.cat!==state.cat)return false;
   if(!state.q.trim())return true;
-  if(/[\u0600-\u06FF]/.test(state.q))return stripAr(d.ar).indexOf(stripAr(state.q.trim()))!==-1;
+  if(/[\u0600-\u06FF]/.test(state.q)){return stripAr(d.ar).indexOf(stripAr(state.q.trim()))!==-1;}
   var hay=norm([d.en,d.tr,d.ref,d.note||'',catLabel(d.cat)].join(' '));
   return norm(state.q).split(' ').filter(Boolean).every(function(t){return hay.indexOf(t)!==-1;});
 }
+
 function renderChips(){
-  $('chips').innerHTML=CATS.map(function(c){
+  var el=document.getElementById('chips');
+  el.innerHTML=CATS.map(function(c){
     var label=c.id==='fav'?'Saved ('+state.fav.size+')':c.label;
     return '<button class="chip" data-action="cat" data-cat="'+c.id+'" aria-pressed="'+(state.cat===c.id)+'">'+label+'</button>';
   }).join('');
 }
+
 function renderList(){
-  var items=state.doas.filter(matches),list=$('list'),total=state.doas.length;
-  $('status').textContent=items.length===total?total+' Doas':items.length+' of '+total+' Doas';
+  var items=DUAS.filter(matches);
+  var list=document.getElementById('list');
+  var status=document.getElementById('status');
+  status.textContent=(items.length===DUAS.length?DUAS.length+' doas':items.length+' of '+DUAS.length+' doas')+(isPremium()?'':'. The free plan includes '+CONFIG.freeDuaIds.length+'.');
   if(!items.length){
-    var msg=state.cat==='fav'&&!state.q?'Nothing saved yet. Tap Save on any Doa to keep it here.':'No Doas match your search.';
-    list.innerHTML='<div class="empty"><p>'+msg+'</p><button data-action="clear">Show all Doas</button></div>';
+    var noSave=state.cat==='fav'&&!isPremium();
+    var msg=noSave?'Saving doas is a Premium feature.':(state.cat==='fav'&&!state.q?'Nothing saved yet. Tap Save on any doa to keep it here.':'No doas match your search.');
+    var btn=noSave?'<button data-action="paywall">See Premium</button>':'<button data-action="clear">Show all doas</button>';
+    list.innerHTML='<div class="empty"><p>'+msg+'</p>'+btn+'</div>';
     return;
   }
-  list.innerHTML=items.map(cardHTML).join('');
+  list.innerHTML=items.map(function(d){return cardHTML(d,false);}).join('');
   syncPlayers();
 }
+
+var featuredIdx=(function(){
+  var n=new Date(),start=new Date(n.getFullYear(),0,0);
+  return Math.floor((n-start)/86400000)%DUAS.length;
+})();
+function renderFeatured(){
+  var pl=DUAS.filter(isUnlocked);
+  document.getElementById('featured').innerHTML=cardHTML(pl[featuredIdx%pl.length],true);
+  syncPlayers();
+}
+
 function refreshCard(id){
-  var d=state.byId[id];if(!d)return;
-  document.querySelectorAll('.card[data-id="'+id+'"]').forEach(function(el){el.outerHTML=cardHTML(d);});
+  var d=byId[id];if(!d)return;
+  document.querySelectorAll('.card[data-id="'+id+'"]').forEach(function(el){
+    el.outerHTML=cardHTML(d,el.classList.contains('featured'));
+  });
   syncPlayers();
 }
+
 function applyPrefs(){
-  document.documentElement.style.setProperty('--ar-size',state.prefs.size+'px');
-  document.querySelectorAll('[data-action="pref"]').forEach(function(b){b.setAttribute('aria-pressed',String(!!state.prefs[b.dataset.k]));});
+  var root=document.documentElement;
+  root.style.setProperty('--ar-size',state.prefs.size+'px');
+  root.style.setProperty('--ar-size-base',state.prefs.size+'px');
+  root.setAttribute('data-script',state.prefs.script);
+  document.querySelectorAll('[data-action="pref"]').forEach(function(b){
+    b.setAttribute('aria-pressed',String(!!state.prefs[b.dataset.k]));
+  });
+  document.getElementById('scriptBtn').textContent='Arabic: '+(state.prefs.script==='naskh'?'Naskh':'Calligraphy');
+  document.getElementById('reciterBtn').textContent='Reciter: '+RECITERS[state.prefs.reciter].name;
 }
 
 /* ---------- events ---------- */
 document.addEventListener('click',function(e){
   var b=e.target.closest('[data-action]');if(!b)return;
-  var a=b.dataset.action,id=b.dataset.id,d=id?state.byId[id]:null;
+  var a=b.dataset.action,id=b.dataset.id,d=id?byId[id]:null;
   switch(a){
-    case 'cat':state.cat=b.dataset.cat;renderChips();renderList();break;
-    case 'clear':state.cat='all';state.q='';$('q').value='';renderChips();renderList();break;
-    case 'pref':state.prefs[b.dataset.k]=!state.prefs[b.dataset.k];savePrefs();applyPrefs();renderList();break;
-    case 'size':state.prefs.size=Math.max(24,Math.min(56,state.prefs.size+parseInt(b.dataset.d,10)));savePrefs();applyPrefs();break;
+    case 'cat':
+      state.cat=b.dataset.cat;renderChips();renderList();break;
+    case 'clear':
+      state.cat='all';state.q='';document.getElementById('q').value='';renderChips();renderList();break;
+    case 'pref':
+      state.prefs[b.dataset.k]=!state.prefs[b.dataset.k];savePrefs();applyPrefs();renderFeatured();renderList();break;
+    case 'size':
+      state.prefs.size=Math.max(22,Math.min(52,state.prefs.size+parseInt(b.dataset.d,10)));savePrefs();applyPrefs();break;
+    case 'script':
+      state.prefs.script=state.prefs.script==='naskh'?'calligraphy':'naskh';savePrefs();applyPrefs();break;
+    case 'next':
+      featuredIdx=featuredIdx+1;renderFeatured();break;
     case 'fav':
+      if(!isPremium()){openSheet('Saving doas is a Premium feature.');break;}
       if(state.fav.has(id))state.fav.delete(id);else state.fav.add(id);
       saveFavs();renderChips();
-      if(state.cat==='fav')renderList();else refreshCard(id);
+      if(state.cat==='fav')renderList();
+      refreshCard(id);
+      if(state.cat==='fav')renderFeatured();
       break;
-    case 'copy':copyText(shareText(d)).then(function(ok){toast(ok?'Copied':'Could not copy. Select the text instead.');});break;
+    case 'copy':
+      copyText(shareText(d)).then(function(ok){toast(ok?'Copied':'Could not copy. Select the text instead.');});break;
     case 'share':
-      if(navigator.share){navigator.share({text:shareText(d)}).catch(function(){});}
-      else{copyText(shareText(d)).then(function(ok){toast(ok?'Copied to share':'Could not copy. Select the text instead.');});}
+      if(navigator.share){
+        navigator.share({text:shareText(d)}).catch(function(){});
+      }else{
+        copyText(shareText(d)).then(function(ok){toast(ok?'Copied to share':'Could not copy. Select the text instead.');});
+      }
       break;
     case 'count':
       state.counts[id]=(state.counts[id]||0)+1;saveCounts();
       try{if(navigator.vibrate)navigator.vibrate(8);}catch(err){}
       refreshCard(id);break;
-    case 'reset':delete state.counts[id];saveCounts();refreshCard(id);break;
-    case 'play':togglePlay(id);break;
+    case 'reset':
+      delete state.counts[id];saveCounts();refreshCard(id);break;
+    case 'paywall':
+      openSheet(b.dataset.reason||'');break;
+    case 'closesheet':
+      closeSheet();break;
+    case 'subscribe':
+      var label=b.textContent;b.disabled=true;b.textContent='Processing…';
+      startCheckout().then(function(){
+        activateSub();afterSubChange();renderSheet();toast('Premium is active');
+      }).catch(function(err){
+        b.disabled=false;b.textContent=label;
+        toast((err&&err.message)||'The payment did not go through');
+      });
+      break;
+    case 'linkopen':
+      payStage='opened';setTimeout(function(){renderSheet();},400);break;
+    case 'confirmpaid':
+      activateSub();payStage='idle';afterSubChange();renderSheet();toast('Premium is active');break;
+    case 'play':
+      togglePlay(id);break;
+    case 'rate':
+      state.prefs.rate=RATES[(RATES.indexOf(state.prefs.rate)+1)%RATES.length];savePrefs();
+      if(AP.audio){AP.audio.defaultPlaybackRate=state.prefs.rate;AP.audio.playbackRate=state.prefs.rate;}
+      syncPlayers();break;
+    case 'loop':
+      state.prefs.loop=!state.prefs.loop;savePrefs();syncPlayers();break;
+    case 'reciter':
+      state.prefs.reciter=RECITER_ORDER[(RECITER_ORDER.indexOf(state.prefs.reciter)+1)%RECITER_ORDER.length];savePrefs();
+      stopCurrent();applyPrefs();renderFeatured();renderList();break;
   }
 });
-$('cardPay').addEventListener('click',payWithCard);
-$('claimBtn').addEventListener('click',claimPaid);
-$('payNote').addEventListener('keydown',function(e){if(e.key==='Enter')claimPaid();});
-$('q').addEventListener('input',function(e){state.q=e.target.value;renderList();});
 
-if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){});});}
-boot();
+document.getElementById('q').addEventListener('input',function(e){
+  state.q=e.target.value;renderList();
+});
+
+document.addEventListener('pointerdown',function(e){if(e.target.classList&&e.target.classList.contains('pseek'))seeking=true;});
+['pointerup','pointercancel'].forEach(function(ev){document.addEventListener(ev,function(){seeking=false;});});
+document.addEventListener('input',function(e){
+  var t=e.target;
+  if(!t.classList||!t.classList.contains('pseek'))return;
+  var a=AP.audio;
+  if(AP.id===t.dataset.id&&a&&isFinite(a.duration)&&a.duration>0&&(AP.status==='playing'||AP.status==='paused')){
+    a.currentTime=t.value/1000*a.duration;
+  }else{t.value=0;}
+});
+
+function probeAudio(){
+  var cfg=AUDIO.d1,list=srcList(cfg,cfg.f),idx=0,done=false,t=null,to=null;
+  function finish(ok){
+    if(done)return;done=true;clearTimeout(to);
+    try{if(t){t.removeAttribute('src');t.load();}}catch(e){}
+    if(ok)document.body.setAttribute('data-audio','inline');
+  }
+  function tryNext(){
+    if(done)return;
+    if(idx>=list.length){finish(false);return;}
+    try{
+      t=new Audio();t.preload='metadata';
+      t.addEventListener('loadedmetadata',function(){finish(true);});
+      t.addEventListener('error',function(){idx++;tryNext();});
+      t.src=list[idx];
+    }catch(e){finish(false);}
+  }
+  to=setTimeout(function(){finish(false);},6000);
+  tryNext();
+}
+
+function registerSW(){
+  try{if('serviceWorker' in navigator&&location.protocol.indexOf('http')===0){navigator.serviceWorker.register('sw.js').catch(function(){});}}catch(e){}
+}
+
+/* When a Payment Link is set to return to this app, Razorpay adds ?razorpay_payment_link_status=paid.
+   This unlocks Premium on the honour system. For checks that cannot be faked, use the payment server. */
+function handleLaunch(){
+  try{
+    var q=new URLSearchParams(location.search);
+    if(payMode()==='link'&&q.get('razorpay_payment_link_status')==='paid'){
+      activateSub();afterSubChange();toast('Premium is active');
+      if(window.history&&history.replaceState)history.replaceState(null,'',location.pathname);
+    }
+    if(location.hash==='#premium')openSheet('');
+  }catch(e){}
+}
+
+/* ---------- init ---------- */
+document.getElementById('sub').textContent='Quranic Doas';
+applyPrefs();renderChips();renderFeatured();renderList();
+updatePremUI();
+probeAudio();
+registerSW();
+handleLaunch();
 })();
 </script>
 </body>
